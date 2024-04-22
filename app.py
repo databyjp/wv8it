@@ -22,20 +22,18 @@ st.header("Get smarter with RAG")
 
 video_options = utils.ETIENNE_COLLECTION + utils.DSPY_COLLECTION
 
-tab1, tab2, background, info = st.tabs(
-    ["Demo", "Source data", "Background", "Behind the magic"]
+background, tab1, tab2, info = st.tabs(
+    ["Background", "Demo", "Source data", "Behind the magic"]
 )
 
 with background:
-    with st.expander("Problem statement"):
-        st.markdown("### There is way too much content out there")
-        st.markdown("*****")
-    with st.expander("Solution"):
-        st.markdown(
-            "### What if you didn't *have* to watch a video for its information?"
-        )
-        st.markdown("- Get a video summary.\n- Ask the video whatever you want.")
-        st.markdown("*****")
+    st.markdown("## There is way too much content out there")
+
+    st.markdown(
+        "#### What if you didn't *have* to watch a video for its information?"
+    )
+    st.markdown("- Get a video summary.\n- Ask the video whatever you want.\n- Work smarter, not harder.")
+    st.markdown("*****")
 
 client = weaviate.connect_to_local(
     headers={"X-OpenAI-Api-Key": openai_apikey}
