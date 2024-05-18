@@ -1,6 +1,6 @@
 import streamlit as st
 import utils
-from config import wiki_collection_name
+from config import wiki_name
 
 
 # @app.route("/llm-or-rag")
@@ -24,9 +24,7 @@ from config import wiki_collection_name
 client = utils.get_weaviate_client()
 
 search_responses = utils.search_comparison(
-    client=client,
-    collection_name=wiki_collection_name,
-    user_query="sports"
+    client=client, collection_name=wiki_name, user_query="sports"
 )
 
 for index, response in search_responses.items():

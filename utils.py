@@ -1,7 +1,9 @@
 import os
+import distyll.utils
 import weaviate
 from weaviate import WeaviateClient
 import cohere
+import ollama
 from config import (
     etienne_collection_name,
     etienne_index_name,
@@ -10,7 +12,8 @@ from config import (
 )
 from weaviate.classes.query import Filter
 from weaviate.collections.collection import Collection
-from typing import List, Tuple
+from typing import List, Tuple, Literal
+import distyll
 
 
 def get_weaviate_client(port: int = 8080, grpc_port: int = 50051) -> WeaviateClient:
@@ -28,36 +31,68 @@ def get_weaviate_client(port: int = 8080, grpc_port: int = 50051) -> WeaviateCli
     return client
 
 
-def ask_llm(user_prompt: str, search_queries_only=False) -> str:
-    cohere_apikey = os.getenv("COHERE_APIKEY")
-    co = cohere.Client(api_key=cohere_apikey)
+def ask_llm(
+    user_prompt: str,
+    search_queries_only=False,
+    provider: Literal["ollama", "cohere"] = "cohere",
+) -> str:
+    if provider == "cohere":
+        cohere_apikey = os.getenv("COHERE_APIKEY")
+        co = cohere.Client(api_key=cohere_apikey)
 
-    response = co.chat(
-        model="command-r-plus",
-        message=user_prompt,
-        search_queries_only=search_queries_only,
-    )
+        response = co.chat(
+            model="command-r-plus",
+            message=user_prompt,
+            search_queries_only=search_queries_only,
+        )
 
-    if search_queries_only:
-        return response.search_queries[0].text
-    else:
-        return response.text
+        if search_queries_only:
+            return response.search_queries[0].text
+        else:
+            return response.text
+    if provider == "ollama":
+        response = ollama.chat(
+            model="mistral:7b",
+            messages=[
+                {
+                    "role": "user",
+                    "content": user_prompt,
+                },
+            ],
+        )
+        return response["message"]["content"]
 
 
-def ask_rag(client: WeaviateClient, user_prompt: str, collection_name: str, target_vector: str = "default", limit=5) -> str:
+def ask_rag(
+    client: WeaviateClient,
+    user_prompt: str,
+    collection_name: str,
+    target_vector: str = "default",
+    limit=MAX_N_CHUNKS,
+) -> str:
     collection = client.collections.get(collection_name)
 
+    try:
+        search_query = ask_llm(user_prompt=user_prompt, search_queries_only=True)
+    except Exception as e:
+        search_query = user_prompt
+
     response = collection.generate.near_text(
-        query=ask_llm(user_prompt=user_prompt, search_queries_only=True),
+        query=search_query,
         limit=limit,
         grouped_task=user_prompt,
-        target_vector=target_vector
+        target_vector=target_vector,
     )
 
     return response.generated
 
 
-def video_search(client: WeaviateClient, collection_name: str, user_question: str, limit: int = MAX_N_CHUNKS):
+def video_search(
+    client: WeaviateClient,
+    collection_name: str,
+    user_question: str,
+    limit: int = MAX_N_CHUNKS,
+):
     collection = client.collections.get(collection_name)
 
     search_response = collection.query.near_text(
@@ -70,7 +105,11 @@ def video_search(client: WeaviateClient, collection_name: str, user_question: st
 
 
 def video_rag(
-    client: WeaviateClient, collection_name: str, search_query: str, prompt: str, limit: int = MAX_N_CHUNKS
+    client: WeaviateClient,
+    collection_name: str,
+    search_query: str,
+    prompt: str,
+    limit: int = MAX_N_CHUNKS,
 ):
     collection = client.collections.get(collection_name)
 
@@ -85,9 +124,11 @@ def video_rag(
 
 
 def ask_etienne(client: WeaviateClient, user_question: str, limit: int = MAX_N_CHUNKS):
-
     search_response = video_search(
-        client=client, collection_name=etienne_collection_name, user_question=user_question, limit=limit
+        client=client,
+        collection_name=etienne_collection_name,
+        user_question=user_question,
+        limit=limit,
     )
 
     prompt = f"""
@@ -98,7 +139,11 @@ def ask_etienne(client: WeaviateClient, user_question: str, limit: int = MAX_N_C
     """
 
     gen_response = video_rag(
-        client=client, collection_name=etienne_collection_name, search_query=user_question, prompt=prompt, limit=limit
+        client=client,
+        collection_name=etienne_collection_name,
+        search_query=user_question,
+        prompt=prompt,
+        limit=limit,
     )
 
     return (search_response, gen_response)
@@ -147,12 +192,10 @@ def search_comparison(
     client: WeaviateClient,
     collection_name: str,
     user_query: str,
-    indexes: List[str] = ["hnsw", "hnsw_bq", "flat", "flat_bq"],
+    indexes: List[str] = ["chunk"],
     limit: int = MAX_N_CHUNKS,
 ):
     search_results = {}
-
-    indexes = ["hnsw", "hnsw_bq", "flat", "flat_bq"]
 
     for i in indexes:
         search_response, search_time = timed_search(
@@ -165,3 +208,16 @@ def search_comparison(
         search_results[i] = (search_response, search_time)
 
     return search_results
+
+
+def add_pdf(pdf_url: str):
+    import distyll.db
+
+    client = get_weaviate_client()
+
+    if "arxiv" in pdf_url:
+        distyll.db.add_arxiv_to_db(client=client, arxiv_url=pdf_url)
+    else:
+        distyll.db.add_pdf_to_db(client=client, pdf_url=pdf_url)
+
+    client.close()

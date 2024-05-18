@@ -23,22 +23,34 @@ def get_or_create_collection(
                 Property(name="url", data_type=DataType.TEXT, skip_vectorization=True),
             ],
             vectorizer_config=[
-                Configure.NamedVectors.text2vec_openai(
-                    name="title",
-                    source_properties=["title"],
+                Configure.NamedVectors.text2vec_ollama(
+                    name="title_chunk",
+                    source_properties=["title", "chunk"],
+                    # model="snowflake-arctic-embed:33m",
+                    model="snowflake-arctic-embed",
+                    api_endpoint="http://host.docker.internal:11434",
                     vector_index_config=Configure.VectorIndex.hnsw(
                         quantizer=Configure.VectorIndex.Quantizer.bq()
                     ),
                 ),
-                Configure.NamedVectors.text2vec_openai(
+                Configure.NamedVectors.text2vec_ollama(
                     name=etienne_index_name,
                     source_properties=["chunk"],
+                    # model="snowflake-arctic-embed:33m",
+                    model="snowflake-arctic-embed",
+                    api_endpoint="http://host.docker.internal:11434",
                     vector_index_config=Configure.VectorIndex.hnsw(
                         quantizer=Configure.VectorIndex.Quantizer.bq()
                     ),
                 ),
             ],
-            generative_config=Configure.Generative.openai(),
+            # generative_config=Configure.Generative.ollama(
+            #     model="mistral:7b",
+            #     api_endpoint="http://host.docker.internal:11434",
+            # ),
+            generative_config=Configure.Generative.cohere(
+                model="command-r-plus",
+            ),
         )
 
     else:
