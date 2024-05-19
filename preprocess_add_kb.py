@@ -50,8 +50,8 @@ if not client.collections.exists(coll_name):
         #     model="mistral:7b",
         #     api_endpoint="http://host.docker.internal:11434",
         # ),
-        generative_config=Configure.Generative.cohere(
-            model="command-r-plus",
+        generative_config=Configure.Generative.openai(
+            model="gpt-4-1106-preview",
         ),
     )
 

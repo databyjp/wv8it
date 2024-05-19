@@ -1,0 +1,49 @@
+import streamlit as st
+import utils
+from config import wiki_name, chunks_index_name
+from weaviate.classes.query import Filter
+
+state_key = "search_comparison_counter"
+
+with utils.get_weaviate_client() as client:
+    st.header("Lightning ⚡️ fast vector searches")
+
+    demo_tab, explanation_tab = st.tabs(["Demo", "What does it mean for me?"])
+
+    user_query = utils.ask_llm(
+        "Generate a random search string for me, just a few words please."
+    )
+
+    with demo_tab:
+        search_responses = utils.search_comparison(
+            client=client, collection_name=wiki_name, user_query=user_query
+        )
+
+        st.subheader("Search speed comparison:")
+
+        st.write("For a randomised search query, how long does a vector search take?")
+
+        col1, col2 = st.columns(2)
+
+        coll = client.collections.get(wiki_name)
+
+        count = coll.aggregate.over_all(total_count=True).total_count
+
+        st.write(f"Dataset: {count} objects")
+
+        with col1:
+            search_time = round(search_responses["flat"][1], 5)
+            st.markdown(f"##### Flat index: `{search_time}`s")
+
+        with col2:
+            if chunks_index_name in search_responses.keys():
+                search_time = round(search_responses[chunks_index_name][1], 5)
+                st.markdown(f"##### HNSW index: `{search_time}`s")
+
+    with explanation_tab:
+        points = [
+            "- ##### Scale datasets to hundreds of millions or more",
+            "- ##### RAG remains fast and accurate",
+        ]
+
+        utils.explain_meaning(points=points, state_key=state_key)

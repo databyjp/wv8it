@@ -2,11 +2,11 @@ import streamlit as st
 import utils
 from config import (
     wiki_name,
-    knowledge_base_name,
-    etienne_collection_name,
     chunks_index_name,
 )
 from weaviate.classes.query import Filter
+
+state_key = "multilingual_counter"
 
 with utils.get_weaviate_client() as client:
     st.header("Speak all the languages, fluently! 🗣️🗣️🗣️")
@@ -33,12 +33,24 @@ with utils.get_weaviate_client() as client:
         if lang_selection != blank_selection:
             wiki_coll = client.collections.get(wiki_name)
             if user_query:
-                response = wiki_coll.query.near_text(
-                    query=user_query,
-                    target_vector=chunks_index_name,
-                    filters=Filter.by_property("lang").equal(lang_map[lang_selection]),
-                    limit=top_n,
-                )
+                try:
+                    response = wiki_coll.query.near_text(
+                        query=user_query,
+                        target_vector=chunks_index_name,
+                        filters=Filter.by_property("lang").equal(
+                            lang_map[lang_selection]
+                        ),
+                        limit=top_n,
+                    )
+                except:
+                    response = wiki_coll.query.near_text(
+                        query=user_query,
+                        target_vector="flat",
+                        filters=Filter.by_property("lang").equal(
+                            lang_map[lang_selection]
+                        ),
+                        limit=top_n,
+                    )
 
                 for result in response.objects:
                     chunk_no = result.properties["chunk_no"]
@@ -48,11 +60,9 @@ with utils.get_weaviate_client() as client:
                         st.write(result.properties["text"])
 
     with explanation_tab:
-        st.subheader("Multilingual support!")
-        st.markdown(
-            """
-            - ##### No need to translate data at input or output
-            - ##### Meet your users where they are
-            - ##### Easy data aggregation across languages
-            """
-        )
+        points = [
+            "- ##### Remove any needs to translate data at input or output",
+            "- ##### Meet your users where they are",
+        ]
+
+        utils.explain_meaning(points=points, state_key=state_key)

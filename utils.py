@@ -4,6 +4,7 @@ import streamlit as st
 import weaviate
 from weaviate import WeaviateClient
 import cohere
+from openai import OpenAI
 import ollama
 from config import (
     etienne_collection_name,
@@ -35,8 +36,21 @@ def get_weaviate_client(port: int = 8080, grpc_port: int = 50051) -> WeaviateCli
 def ask_llm(
     user_prompt: str,
     search_queries_only=False,
-    provider: Literal["ollama", "cohere"] = "cohere",
+    provider: Literal["ollama", "cohere"] = "openai",
 ) -> str:
+    if provider == "openai":
+        openai_client = OpenAI()
+        if search_queries_only:
+            user_prompt = "Write a search query to find passages that would help answer the following. Answer with the best one search query and nothing else: ===== " + user_prompt
+        response = openai_client.chat.completions.create(
+            model="gpt-4-1106-preview",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": user_prompt},
+            ],
+        )
+        return response.choices[0].message.content
+
     if provider == "cohere":
         cohere_apikey = os.getenv("COHERE_APIKEY")
         co = cohere.Client(api_key=cohere_apikey)
@@ -200,20 +214,23 @@ def search_comparison(
     client: WeaviateClient,
     collection_name: str,
     user_query: str,
-    indexes: List[str] = ["chunk"],
+    indexes: List[str] = [chunks_index_name, "flat"],
     limit: int = MAX_N_CHUNKS,
 ):
     search_results = {}
 
     for i in indexes:
-        search_response, search_time = timed_search(
-            client=client,
-            collection_name=collection_name,
-            user_query=user_query,
-            target_vector=i,
-            limit=limit,
-        )
-        search_results[i] = (search_response, search_time)
+        try:
+            search_response, search_time = timed_search(
+                client=client,
+                collection_name=collection_name,
+                user_query=user_query,
+                target_vector=i,
+                limit=limit,
+            )
+            search_results[i] = (search_response, search_time)
+        except Exception as e:
+            pass
 
     return search_results
 
@@ -285,3 +302,18 @@ def add_txt_local(
             },
             uuid=obj_uuid,
         )
+
+
+def safe_delete_collection(wv_client: WeaviateClient, wv_coll_name: str) -> bool:
+    if wv_client.collections.exists(wv_coll_name):
+        user_input = input(
+            f"Collection '{wv_coll_name}' exists. Delete (y / or any other key to cancel)? "
+        )
+        if user_input == "y":
+            wv_client.collections.delete(wv_coll_name)
+            print("Collection deleted.")
+            return True
+        else:
+            print("Not deleted.")
+            return False
+    return True

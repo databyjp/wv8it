@@ -17,6 +17,7 @@ DSPY_VIDEOS = [
 etienne_collection_name = "EtienneTextChunk"
 wiki_name = "WikiChunk"
 knowledge_base_name = CHUNK_COLLECTION
+multimodal_name = "Multimodal"
 chunks_index_name = "chunk"
 
 MAX_N_CHUNKS = 10
