@@ -1,6 +1,6 @@
 import distyll
 from pathlib import Path
-from config import ETIENNE_COLLECTION, DSPY_COLLECTION
+from config import ETIENNE_VIDEOS, DSPY_VIDEOS
 import os
 import json
 
@@ -8,7 +8,7 @@ openai_api_key = os.getenv("OPENAI_APIKEY")
 out_dir = Path("./dl_dir")
 
 for videos in [
-    ETIENNE_COLLECTION,
+    ETIENNE_VIDEOS,
     # DSPY_COLLECTION
 ]:
     for yt_url in videos:

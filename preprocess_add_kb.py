@@ -1,7 +1,8 @@
 from weaviate import WeaviateClient
 from weaviate.classes.config import Configure, Property, DataType
 import utils
-from config import CHUNK_COLLECTION
+from config import knowledge_base_name, chunks_index_name
+from weaviate.util import generate_uuid5
 
 
 def safe_delete_collection(wv_client: WeaviateClient, wv_coll_name: str) -> bool:
@@ -21,36 +22,44 @@ def safe_delete_collection(wv_client: WeaviateClient, wv_coll_name: str) -> bool
 
 client = utils.get_weaviate_client()
 
-coll_name = CHUNK_COLLECTION
+coll_name = knowledge_base_name
 
 safe_delete_collection(client, coll_name)
 
-client.collections.create(
-    coll_name,
-    properties=[
-        Property(name="title", data_type=DataType.TEXT),
-        Property(name="url", data_type=DataType.TEXT, skip_vectorization=True),
-        Property(name="chunk", data_type=DataType.TEXT),
-        Property(name="chunk_no", data_type=DataType.INT),
-    ],
-    vectorizer_config=[
-        Configure.NamedVectors.text2vec_ollama(
-            name="default",
-            # model="snowflake-arctic-embed:33m",
-            model="snowflake-arctic-embed",
-            api_endpoint="http://host.docker.internal:11434",
-            vector_index_config=Configure.VectorIndex.hnsw(
-                quantizer=Configure.VectorIndex.Quantizer.bq()
+if not client.collections.exists(coll_name):
+    client.collections.create(
+        coll_name,
+        properties=[
+            Property(name="title", data_type=DataType.TEXT),
+            Property(name="url", data_type=DataType.TEXT, skip_vectorization=True),
+            Property(name="chunk", data_type=DataType.TEXT),
+            Property(name="chunk_no", data_type=DataType.INT),
+        ],
+        vectorizer_config=[
+            Configure.NamedVectors.text2vec_ollama(
+                name=chunks_index_name,
+                # model="snowflake-arctic-embed:33m",
+                model="snowflake-arctic-embed",
+                api_endpoint="http://host.docker.internal:11434",
+                vector_index_config=Configure.VectorIndex.hnsw(
+                    quantizer=Configure.VectorIndex.Quantizer.bq()
+                ),
             ),
+        ],
+        # generative_config=Configure.Generative.ollama(
+        #     model="mistral:7b",
+        #     api_endpoint="http://host.docker.internal:11434",
+        # ),
+        generative_config=Configure.Generative.cohere(
+            model="command-r-plus",
         ),
-    ],
-    # generative_config=Configure.Generative.ollama(
-    #     model="mistral:7b",
-    #     api_endpoint="http://host.docker.internal:11434",
-    # ),
-    generative_config=Configure.Generative.cohere(
-        model="command-r-plus",
-    ),
+    )
+
+utils.add_txt_local(
+    client=client,
+    title="Introducing Meta Llama 3 (2024 April 18)",
+    collection_name=coll_name,
+    txt_path="./assets/llama3.txt",
 )
 
 client.close()

@@ -7,7 +7,7 @@ import distyll
 import utils
 from weaviate.collections.collection import Collection
 from weaviate import WeaviateClient
-from config import etienne_collection_name, etienne_index_name
+from config import etienne_collection_name, chunks_index_name
 
 
 def get_or_create_collection(
@@ -34,7 +34,7 @@ def get_or_create_collection(
                     ),
                 ),
                 Configure.NamedVectors.text2vec_ollama(
-                    name=etienne_index_name,
+                    name=chunks_index_name,
                     source_properties=["chunk"],
                     # model="snowflake-arctic-embed:33m",
                     model="snowflake-arctic-embed",

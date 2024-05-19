@@ -5,7 +5,7 @@ from weaviate.classes.config import Configure, Property, DataType
 from weaviate.util import generate_uuid5
 from tqdm import tqdm
 import utils
-from config import wiki_name, wiki_index_name
+from config import wiki_name, chunks_index_name
 
 
 def safe_delete_collection(wv_client: WeaviateClient, wv_coll_name: str) -> bool:
@@ -36,14 +36,16 @@ if not client.collections.exists(coll_name):
             Property(name="title", data_type=DataType.TEXT),
             Property(name="text", data_type=DataType.TEXT),
             Property(name="url", data_type=DataType.TEXT, skip_vectorization=True),
-            Property(name="cohere_id", data_type=DataType.TEXT, skip_vectorization=True),
+            Property(
+                name="cohere_id", data_type=DataType.TEXT, skip_vectorization=True
+            ),
             Property(name="chunk_no", data_type=DataType.INT),
             Property(name="lang", data_type=DataType.TEXT),
         ],
         vectorizer_config=[
             Configure.NamedVectors.text2vec_cohere(
                 model="embed-multilingual-v3.0",
-                name=wiki_index_name,
+                name=chunks_index_name,
                 vector_index_config=Configure.VectorIndex.hnsw(
                     quantizer=Configure.VectorIndex.Quantizer.bq()
                 ),
@@ -57,24 +59,26 @@ if not client.collections.exists(coll_name):
 
 wiki_coll = client.collections.get(coll_name)
 
-# import_sets = [
-#     ("simple", 1000000),  # Simple English Wiki subset
-#     ("fr", 50000),  # French Wikipedia
-#     ("ko", 50000),  # Korean Wikipedia
-#     ("nl", 50000),  # Dutch Wikipedia
-# ]
-
 import_sets = [
-    ("simple", 100),  # Simple English Wiki subset
-    ("fr", 50),  # French Wikipedia
-    ("ko", 50),  # Korean Wikipedia
-    ("nl", 50),  # Dutch Wikipedia
+    ("simple", 1000000),  # Simple English Wiki subset
+    ("fr", 100000),  # French Wikipedia
+    ("ko", 100000),  # Korean Wikipedia
+    ("nl", 100000),  # Dutch Wikipedia
 ]
+
+# import_sets = [
+#     ("simple", 1000),  # Simple English Wiki subset
+#     ("fr", 1000),  # French Wikipedia
+#     ("ko", 1000),  # Korean Wikipedia
+#     ("nl", 1000),  # Dutch Wikipedia
+# ]
 
 for lang, max_rows in import_sets:
     docs = load_dataset(
         "Cohere/wikipedia-2023-11-embed-multilingual-v3", lang, split="train"
     )
+
+    docs.shuffle()
 
     with wiki_coll.batch.fixed_size(2000) as batch:
         for i, doc in enumerate(tqdm(docs)):
@@ -89,7 +93,7 @@ for lang, max_rows in import_sets:
             batch.add_object(
                 properties=properties,
                 uuid=generate_uuid5(doc["_id"]),
-                vector={wiki_index_name: doc["emb"]},
+                vector={chunks_index_name: doc["emb"]},
             )
 
             if batch.number_errors > 100:

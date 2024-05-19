@@ -1,6 +1,6 @@
 from distyll.config import CHUNK_COLLECTION
 
-ETIENNE_COLLECTION = [
+ETIENNE_VIDEOS = [
     "https://youtu.be/K1R7oK2piUM",  # Our Mad Journey of Building a Vector Database in Go - Weaviate at FOSDEM 2023
     "https://youtu.be/4sLJapXEPd4",  # Weaviate: An Architectural Deep Dive (Etienne Dilocker)
     "https://youtu.be/KT2RFMTJKGs",  # Etienne AI conference talk on multi-tenancy
@@ -8,15 +8,15 @@ ETIENNE_COLLECTION = [
     "https://youtu.be/IesakuRUrLE",  # Etienne and Instabase Shipping Trustworthy AI Products
 ]
 
-DSPY_COLLECTION = [
+DSPY_VIDEOS = [
     "https://youtu.be/41EfOY0Ldkc",  # DSPy Explained!
     "https://youtu.be/ickqCzFxWj0",  # DSPy + Weaviate for the Next Generation of LLM Apps
     "https://youtu.be/CEuUG4Umfxs",  # Getting Started with RAG in DSPy!
 ]
 
 etienne_collection_name = "EtienneTextChunk"
-etienne_index_name = "chunk"
 wiki_name = "WikiChunk"
-wiki_index_name = "chunk"
 knowledge_base_name = CHUNK_COLLECTION
+chunks_index_name = "chunk"
+
 MAX_N_CHUNKS = 10
