@@ -7,7 +7,7 @@ import distyll
 import utils
 from weaviate.collections.collection import Collection
 from weaviate import WeaviateClient
-from config import etienne_collection_name, chunks_index_name
+from config import etienne_collection_name, chunks_index_name, generative_config
 
 
 utils.safe_delete_collection(utils.get_weaviate_client(), etienne_collection_name)
@@ -47,16 +47,7 @@ def get_or_create_collection(
                     ),
                 ),
             ],
-            # generative_config=Configure.Generative.ollama(
-            #     model="mistral:7b",
-            #     api_endpoint="http://host.docker.internal:11434",
-            # ),
-            # generative_config=Configure.Generative.openai(
-            #     model="gpt-4",
-            # ),
-            generative_config=Configure.Generative.cohere(
-                model="command-r-plus",
-            )
+            generative_config=generative_config
         )
 
     else:

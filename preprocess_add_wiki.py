@@ -5,7 +5,7 @@ from weaviate.classes.config import Configure, Property, DataType
 from weaviate.util import generate_uuid5
 from tqdm import tqdm
 import utils
-from config import wiki_name, chunks_index_name
+from config import wiki_name, chunks_index_name, generative_config
 
 client = utils.get_weaviate_client()
 
@@ -42,12 +42,7 @@ if not client.collections.exists(coll_name):
                 source_properties=["title", "text"],
             ),
         ],
-        # generative_config=Configure.Generative.openai(
-        #     model="gpt-4",
-        # ),
-        generative_config=Configure.Generative.cohere(
-            model="command-r-plus",
-        )
+        generative_config=generative_config
     )
 
 wiki_coll = client.collections.get(coll_name)

@@ -1,4 +1,5 @@
 from distyll.config import CHUNK_COLLECTION
+from weaviate.classes.config import Configure
 
 ETIENNE_VIDEOS = [
     "https://youtu.be/K1R7oK2piUM",  # Our Mad Journey of Building a Vector Database in Go - Weaviate at FOSDEM 2023
@@ -22,4 +23,11 @@ chunks_index_name = "chunk"
 
 MAX_N_CHUNKS = 5
 
-# todo - update model to GPT4 with long context window
+# generative_config = Configure.Generative.ollama(
+#     model="llama3",
+#     api_endpoint="http://host.docker.internal:11434",
+# )
+# generative_config = Configure.Generative.openai(
+#     model="gpt-4",
+# )
+generative_config = Configure.Generative.cohere(model="command-r-plus")

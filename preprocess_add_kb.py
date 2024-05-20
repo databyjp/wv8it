@@ -1,7 +1,7 @@
 from weaviate import WeaviateClient
 from weaviate.classes.config import Configure, Property, DataType
 import utils
-from config import knowledge_base_name, chunks_index_name
+from config import knowledge_base_name, chunks_index_name, generative_config
 from weaviate.util import generate_uuid5
 
 
@@ -48,20 +48,7 @@ if not client.collections.exists(coll_name):
                 ),
             ),
         ],
-        # generative_config=Configure.Generative.ollama(
-        #     model="mistral:7b",
-        #     api_endpoint="http://host.docker.internal:11434",
-        # ),
-        # generative_config=Configure.Generative.ollama(
-        #     model="llama3",
-        #     api_endpoint="http://host.docker.internal:11434",
-        # ),
-        generative_config=Configure.Generative.cohere(
-            model="command-r-plus",
-        )
-        # generative_config=Configure.Generative.openai(
-        #     model="gpt-4",
-        # ),
+        generative_config=generative_config
     )
 
 utils.add_txt_local(
