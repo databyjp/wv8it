@@ -10,6 +10,9 @@ from weaviate import WeaviateClient
 from config import etienne_collection_name, chunks_index_name
 
 
+utils.safe_delete_collection(utils.get_weaviate_client(), etienne_collection_name)
+
+
 def get_or_create_collection(
     client: WeaviateClient, collection_name: str
 ) -> Collection:
@@ -49,7 +52,7 @@ def get_or_create_collection(
             #     api_endpoint="http://host.docker.internal:11434",
             # ),
             generative_config=Configure.Generative.openai(
-                model="gpt-4-1106-preview",
+                model="gpt-4",
             ),
         )
 

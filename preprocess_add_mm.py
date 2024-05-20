@@ -43,7 +43,7 @@ if not client.collections.exists(coll_name):
         ],
         # Define the generative module
         generative_config=Configure.Generative.openai(
-            model="gpt-4-1106-preview",
+            model="gpt-4",
         ),
     )
 
@@ -106,9 +106,9 @@ with mm_coll.batch.fixed_size(50) as batch:
         # Batcher automatically sends batches
 
 # Check for failed objects
-if len(movies.batch.failed_objects) > 0:
-    print(f"Failed to import {len(movies.batch.failed_objects)} objects")
-    for failed in movies.batch.failed_objects:
+if len(mm_coll.batch.failed_objects) > 0:
+    print(f"Failed to import {len(mm_coll.batch.failed_objects)} objects")
+    for failed in mm_coll.batch.failed_objects:
         print(f"e.g. Failed to import object with error: {failed.message}")
 
 client.close()

@@ -16,6 +16,7 @@ from weaviate.classes.query import Filter
 from typing import List, Literal
 import distyll
 from weaviate.util import generate_uuid5
+import base64
 
 
 def get_weaviate_client(port: int = 8080, grpc_port: int = 50051) -> WeaviateClient:
@@ -43,7 +44,7 @@ def ask_llm(
         if search_queries_only:
             user_prompt = "Write a search query to find passages that would help answer the following. Answer with the best one search query and nothing else: ===== " + user_prompt
         response = openai_client.chat.completions.create(
-            model="gpt-4-1106-preview",
+            model="gpt-4",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": user_prompt},
@@ -248,28 +249,11 @@ def add_pdf(pdf_url: str):
     client.close()
 
 
-def explain_meaning(points: List[str], state_key: str):
+def explain_meaning(points: List[str]):
     st.subheader("With this, you could...")
 
-    if state_key not in st.session_state:
-        st.session_state[state_key] = 0
-
-    show_more_col, button_col = st.columns([4, 1])
-
-    def show_more():
-        if st.session_state[state_key] < len(points):
-            with show_more_col:
-                for i in range(st.session_state[state_key] + 1):
-                    st.markdown(points[i])
-                st.session_state[state_key] += 1
-        else:
-            with show_more_col:
-                for i in range(len(points)):
-                    st.markdown(points[i])
-
-    with button_col:
-        if st.button("Show more"):
-            show_more()
+    for i in range(len(points)):
+        st.markdown(points[i])
 
 
 def add_txt_local(
@@ -317,3 +301,34 @@ def safe_delete_collection(wv_client: WeaviateClient, wv_coll_name: str) -> bool
             print("Not deleted.")
             return False
     return True
+
+
+def url_to_base64(url):
+    import requests
+    import base64
+
+    image_response = requests.get(url)
+    return to_base64(image_response.content)
+
+
+def to_base64(content):
+
+    return base64.b64encode(content).decode("utf-8")
+
+
+def base64_to_image(base64_string: str):
+
+    from io import BytesIO
+    from PIL import Image
+
+    # Decode the base64 string
+    decoded_data = base64.b64decode(base64_string)
+
+    # Create a BytesIO object from the decoded data
+    image_data = BytesIO(decoded_data)
+
+    # Open the image using PIL
+    image = Image.open(image_data)
+
+    # Return the PIL Image object
+    return image

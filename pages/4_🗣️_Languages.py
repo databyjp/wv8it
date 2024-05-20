@@ -6,8 +6,6 @@ from config import (
 )
 from weaviate.classes.query import Filter
 
-state_key = "multilingual_counter"
-
 with utils.get_weaviate_client() as client:
     st.header("Speak all the languages, fluently! 🗣️🗣️🗣️")
 
@@ -33,24 +31,14 @@ with utils.get_weaviate_client() as client:
         if lang_selection != blank_selection:
             wiki_coll = client.collections.get(wiki_name)
             if user_query:
-                try:
-                    response = wiki_coll.query.near_text(
-                        query=user_query,
-                        target_vector=chunks_index_name,
-                        filters=Filter.by_property("lang").equal(
-                            lang_map[lang_selection]
-                        ),
-                        limit=top_n,
-                    )
-                except:
-                    response = wiki_coll.query.near_text(
-                        query=user_query,
-                        target_vector="flat",
-                        filters=Filter.by_property("lang").equal(
-                            lang_map[lang_selection]
-                        ),
-                        limit=top_n,
-                    )
+                response = wiki_coll.query.near_text(
+                    query=user_query,
+                    target_vector=chunks_index_name,
+                    filters=Filter.by_property("lang").equal(
+                        lang_map[lang_selection]
+                    ),
+                    limit=top_n,
+                )
 
                 for result in response.objects:
                     chunk_no = result.properties["chunk_no"]
@@ -65,4 +53,4 @@ with utils.get_weaviate_client() as client:
             "- ##### Meet your users where they are",
         ]
 
-        utils.explain_meaning(points=points, state_key=state_key)
+        utils.explain_meaning(points=points)

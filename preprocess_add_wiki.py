@@ -29,21 +29,21 @@ if not client.collections.exists(coll_name):
         vectorizer_config=[
             Configure.NamedVectors.text2vec_cohere(
                 model="embed-multilingual-v3.0",
+                name=chunks_index_name,
+                vector_index_config=Configure.VectorIndex.hnsw(
+                    quantizer=Configure.VectorIndex.Quantizer.bq()
+                ),
+                source_properties=["title", "text"],
+            ),
+            Configure.NamedVectors.text2vec_cohere(
+                model="embed-multilingual-v3.0",
                 name="flat",
                 vector_index_config=Configure.VectorIndex.flat(),
                 source_properties=["title", "text"],
             ),
-            # Configure.NamedVectors.text2vec_cohere(
-            #     model="embed-multilingual-v3.0",
-            #     name=chunks_index_name,
-            #     vector_index_config=Configure.VectorIndex.hnsw(
-            #         quantizer=Configure.VectorIndex.Quantizer.bq()
-            #     ),
-            #     source_properties=["title", "text"],
-            # ),
         ],
         generative_config=Configure.Generative.openai(
-            model="gpt-4-1106-preview",
+            model="gpt-4",
         ),
     )
 

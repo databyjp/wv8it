@@ -36,11 +36,13 @@ if not client.collections.exists(coll_name):
             Property(name="chunk_no", data_type=DataType.INT),
         ],
         vectorizer_config=[
-            Configure.NamedVectors.text2vec_ollama(
+            # Configure.NamedVectors.text2vec_ollama(
+            #     # model="snowflake-arctic-embed:33m",
+            #     # model="snowflake-arctic-embed",
+            #     api_endpoint="http://host.docker.internal:11434",
+            Configure.NamedVectors.text2vec_cohere(
+                model="embed-multilingual-v3.0",
                 name=chunks_index_name,
-                # model="snowflake-arctic-embed:33m",
-                model="snowflake-arctic-embed",
-                api_endpoint="http://host.docker.internal:11434",
                 vector_index_config=Configure.VectorIndex.hnsw(
                     quantizer=Configure.VectorIndex.Quantizer.bq()
                 ),
@@ -50,8 +52,14 @@ if not client.collections.exists(coll_name):
         #     model="mistral:7b",
         #     api_endpoint="http://host.docker.internal:11434",
         # ),
+        # generative_config=Configure.Generative.openai(
+        #     model="gpt-4",
+        # ),
+        # generative_config=Configure.Generative.cohere(
+        #     model="command-r",
+        # )
         generative_config=Configure.Generative.openai(
-            model="gpt-4-1106-preview",
+            model="gpt-4",
         ),
     )
 

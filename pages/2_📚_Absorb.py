@@ -2,8 +2,6 @@ import streamlit as st
 import utils
 from config import knowledge_base_name, chunks_index_name
 
-state_key = "knowledge_counter"
-
 with utils.get_weaviate_client() as client:
     st.header("Be a know-it-all 📚🤓")
 
@@ -52,7 +50,7 @@ with utils.get_weaviate_client() as client:
             "- ##### No need for complex & expensive re-training of models",
         ]
 
-        utils.explain_meaning(points=points, state_key=state_key)
+        utils.explain_meaning(points=points)
 
         with st.expander("Just like this guy..."):
             st.image("./assets/i-know-kung-fu.gif", use_column_width=True)

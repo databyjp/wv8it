@@ -15,7 +15,7 @@ with utils.get_weaviate_client() as client:
     questions = [
         "Historical events",
         "Events in the Antipodes",
-        "Max Verstappen",
+        "Formula 1 driver",
         type_own_question,
     ]
 
@@ -49,19 +49,12 @@ with utils.get_weaviate_client() as client:
                     st.write(o.properties["text"])
 
         with vector_tab:
-            st.subheader("Keyword search:")
-            try:
-                vector_response = collection.query.near_text(
-                    query=user_question,
-                    limit=5,
-                    target_vector=chunks_index_name,
-                )
-            except:
-                vector_response = collection.query.near_text(
-                    query=user_question,
-                    limit=5,
-                    target_vector="flat",
-                )
+            st.subheader("Vector search:")
+            vector_response = collection.query.near_text(
+                query=user_question,
+                limit=5,
+                target_vector=chunks_index_name,
+            )
 
             for o in vector_response.objects:
                 with st.expander(o.properties["title"]):

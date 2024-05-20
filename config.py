@@ -20,4 +20,6 @@ knowledge_base_name = CHUNK_COLLECTION
 multimodal_name = "Multimodal"
 chunks_index_name = "chunk"
 
-MAX_N_CHUNKS = 10
+MAX_N_CHUNKS = 5
+
+# todo - update model to GPT4 with long context window

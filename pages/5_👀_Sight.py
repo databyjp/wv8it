@@ -1,68 +1,71 @@
 import streamlit as st
 import utils
 from config import (
-    wiki_name,
+    multimodal_name,
     chunks_index_name,
 )
 from weaviate.classes.query import Filter
 
-state_key = "multilingual_counter"
-
 with utils.get_weaviate_client() as client:
-    st.header("Speak all the languages, fluently! 🗣️🗣️🗣️")
+    st.header("Vision-based search! 👀")
+
+    # Get the collection
+    movies = client.collections.get(multimodal_name)
 
     demo_tab, explanation_tab = st.tabs(["Demo", "What does it mean for me?"])
 
     with demo_tab:
-        blank_selection = "Select a language"
-        lang_map = {
-            "English": "simple",
-            "French": "fr",
-            "Korean": "ko",
-            "Dutch": "nl",
-        }
+        img_tab, text_tab = st.tabs(["Image search", "Text search"])
 
-        lang_selection = st.selectbox(
-            "Select a language",
-            [blank_selection, "English", "French", "Korean", "Dutch"],
-        )
-        user_query = st.text_input("Find information about...")
-        # top_n = st.slider("How many results?", 1, 20, 10)
-        top_n = 10
+        with img_tab:
+            input_col, preview_col = st.columns(2)
+            with input_col:
+                user_image = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
+            with preview_col:
+                if user_image:
+                    st.image(user_image, caption="Your image", width=200)
 
-        if lang_selection != blank_selection:
-            wiki_coll = client.collections.get(wiki_name)
+            # Show results in 5 columns
+            col1, col2, col3, col4, col5 = st.columns(5)
+
+            if user_image:
+                query_b64 = utils.to_base64(user_image.getvalue())
+
+                response = movies.query.near_image(
+                    near_image=query_b64,
+                    limit=5,
+                    return_properties=["title", "release_date", "tmdb_id", "poster"]  # To include the poster property in the response (`blob` properties are not returned by default)
+                )
+
+                for i, o in enumerate(response.objects):
+                    img = utils.base64_to_image(o.properties["poster"])
+                    with locals()[f"col{i+1}"]:
+                        st.image(img, caption=o.properties["title"], use_column_width=True)
+
+
+        with text_tab:
+            user_query = st.text_input("Find images like...")
+
+            # Show results in 5 columns
+            col1, col2, col3, col4, col5 = st.columns(5)
+
             if user_query:
-                try:
-                    response = wiki_coll.query.near_text(
-                        query=user_query,
-                        target_vector=chunks_index_name,
-                        filters=Filter.by_property("lang").equal(
-                            lang_map[lang_selection]
-                        ),
-                        limit=top_n,
-                    )
-                except:
-                    response = wiki_coll.query.near_text(
-                        query=user_query,
-                        target_vector="flat",
-                        filters=Filter.by_property("lang").equal(
-                            lang_map[lang_selection]
-                        ),
-                        limit=top_n,
-                    )
+                response = movies.query.near_text(
+                    query=user_query,
+                    limit=5,
+                    return_properties=["title", "release_date", "tmdb_id", "poster"]  # To include the poster property in the response (`blob` properties are not returned by default)
+                )
 
-                for result in response.objects:
-                    chunk_no = result.properties["chunk_no"]
-                    with st.expander(
-                        result.properties["title"] + f" (chunk {chunk_no})"
-                    ):
-                        st.write(result.properties["text"])
+                for i, o in enumerate(response.objects):
+                    img = utils.base64_to_image(o.properties["poster"])
+                    with locals()[f"col{i+1}"]:
+                        st.image(img, caption=o.properties["title"], use_column_width=True)
+
 
     with explanation_tab:
         points = [
-            "- ##### Remove any needs to translate data at input or output",
-            "- ##### Meet your users where they are",
+            "- ##### Multi-modal search at your fingertips",
+            "- ##### Search images and text with images or text",
         ]
 
-        utils.explain_meaning(points=points, state_key=state_key)
+        utils.explain_meaning(points=points)

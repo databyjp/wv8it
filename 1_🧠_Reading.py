@@ -1,8 +1,6 @@
 import streamlit as st
 import utils
 
-state_key = "etienne_counter"
-
 with utils.get_weaviate_client() as client:
     st.header("Read minds 🧠🔮🧠")
 
@@ -22,7 +20,7 @@ with utils.get_weaviate_client() as client:
         questions = [
             "Why did you build Weaviate in golang?",
             "What's multi-tenancy?",
-            "What type of vector index does Weaviate use?",
+            "What great about HNSW?",
             "What's locally adaptive quantization?",
             "What foods do you like?",
             "Who's your favourite golfer?",
@@ -52,7 +50,7 @@ with utils.get_weaviate_client() as client:
             "- ##### Enable self-service support & knowledge discovery",
         ]
 
-        utils.explain_meaning(points=points, state_key=state_key)
+        utils.explain_meaning(points=points)
 
         # st.subheader("With this, you could...")
 
