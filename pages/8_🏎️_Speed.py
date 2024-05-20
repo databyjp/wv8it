@@ -30,13 +30,16 @@ with utils.get_weaviate_client() as client:
         col1, col2 = st.columns(2)
 
         with col1:
-            if chunks_index_name in search_responses.keys():
-                search_time = round(search_responses[chunks_index_name][1], 5)
-                st.markdown(f"##### HNSW index: `{search_time}`s")
+            search_time = round(search_responses["flat"][1], 5)
+            st.markdown(f"##### Brute force search: `{search_time}`s")
 
         with col2:
-            search_time = round(search_responses["flat"][1], 5)
-            st.markdown(f"##### Flat index: `{search_time}`s")
+            if chunks_index_name in search_responses.keys():
+                search_time = round(search_responses[chunks_index_name][1], 5)
+                st.markdown(f"##### Approximate nearest neighbor (ANN) search: `{search_time}`s")
+
+        st.write("As the dataset grows, the difference in search time will become more pronounced.")
+        st.write("For a dataset 100x the size: linear search would take 100x longer, while ANN would take a few times longer.")
 
     with explanation_tab:
         points = [

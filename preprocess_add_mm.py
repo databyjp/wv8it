@@ -42,9 +42,12 @@ if not client.collections.exists(coll_name):
             ),
         ],
         # Define the generative module
-        generative_config=Configure.Generative.openai(
-            model="gpt-4",
-        ),
+        # generative_config=Configure.Generative.openai(
+        #     model="gpt-4",
+        # ),
+        generative_config=Configure.Generative.cohere(
+            model="command-r-plus",
+        )
     )
 
 mm_coll = client.collections.get(coll_name)

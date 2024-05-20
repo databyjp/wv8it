@@ -51,9 +51,12 @@ def get_or_create_collection(
             #     model="mistral:7b",
             #     api_endpoint="http://host.docker.internal:11434",
             # ),
-            generative_config=Configure.Generative.openai(
-                model="gpt-4",
-            ),
+            # generative_config=Configure.Generative.openai(
+            #     model="gpt-4",
+            # ),
+            generative_config=Configure.Generative.cohere(
+                model="command-r-plus",
+            )
         )
 
     else:

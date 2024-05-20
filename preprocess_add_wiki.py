@@ -42,9 +42,12 @@ if not client.collections.exists(coll_name):
                 source_properties=["title", "text"],
             ),
         ],
-        generative_config=Configure.Generative.openai(
-            model="gpt-4",
-        ),
+        # generative_config=Configure.Generative.openai(
+        #     model="gpt-4",
+        # ),
+        generative_config=Configure.Generative.cohere(
+            model="command-r-plus",
+        )
     )
 
 wiki_coll = client.collections.get(coll_name)

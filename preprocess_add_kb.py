@@ -52,15 +52,16 @@ if not client.collections.exists(coll_name):
         #     model="mistral:7b",
         #     api_endpoint="http://host.docker.internal:11434",
         # ),
+        # generative_config=Configure.Generative.ollama(
+        #     model="llama3",
+        #     api_endpoint="http://host.docker.internal:11434",
+        # ),
+        generative_config=Configure.Generative.cohere(
+            model="command-r-plus",
+        )
         # generative_config=Configure.Generative.openai(
         #     model="gpt-4",
         # ),
-        # generative_config=Configure.Generative.cohere(
-        #     model="command-r",
-        # )
-        generative_config=Configure.Generative.openai(
-            model="gpt-4",
-        ),
     )
 
 utils.add_txt_local(
