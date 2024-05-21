@@ -48,10 +48,10 @@ if not client.collections.exists(coll_name):
 wiki_coll = client.collections.get(coll_name)
 
 import_sets = [
-    ("simple", 500000),  # Simple English Wiki subset
-    ("fr", 100000),  # French Wikipedia
-    ("ko", 100000),  # Korean Wikipedia
-    ("nl", 100000),  # Dutch Wikipedia
+    ("simple", 600000),  # Simple English Wiki subset
+    ("fr", 200000),  # French Wikipedia
+    ("ko", 200000),  # Korean Wikipedia
+    ("nl", 200000),  # Dutch Wikipedia
 ]
 
 for lang, max_rows in import_sets:

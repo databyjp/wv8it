@@ -43,6 +43,9 @@ with utils.get_weaviate_client() as client:
         if pdf_path:
             utils.add_pdf(pdf_path)
 
+        with st.expander("Just like this guy..."):
+            st.image("./assets/i-know-kung-fu.gif", use_column_width=True)
+
     with explanation_tab:
         points = [
             "- ##### Leverage any existing knowledge source",
@@ -51,6 +54,3 @@ with utils.get_weaviate_client() as client:
         ]
 
         utils.explain_meaning(points=points)
-
-        with st.expander("Just like this guy..."):
-            st.image("./assets/i-know-kung-fu.gif", use_column_width=True)
