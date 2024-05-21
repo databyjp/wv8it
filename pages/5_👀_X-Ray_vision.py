@@ -44,7 +44,17 @@ with utils.get_weaviate_client() as client:
 
 
         with text_tab:
-            user_query = st.text_input("Find images like...")
+            questions = [
+                "Motorsport vehicle",
+                "Intergalactic voyage",
+                "Dog",
+                "Chien",
+                "Red posters",
+                "Green action hero",
+                "Oceans"
+            ]
+            question_caption = "Find images like..."
+            user_query = utils.type_or_select_question(questions=questions, question_caption=question_caption)
 
             # Show results in 5 columns
             col1, col2, col3, col4, col5 = st.columns(5)

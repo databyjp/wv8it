@@ -21,7 +21,7 @@ knowledge_base_name = CHUNK_COLLECTION
 multimodal_name = "Multimodal"
 chunks_index_name = "chunk"
 
-MAX_N_CHUNKS = 5
+MAX_N_CHUNKS = 8
 
 # generative_config = Configure.Generative.ollama(
 #     model="llama3",

@@ -10,23 +10,14 @@ from config import (
 with utils.get_weaviate_client() as client:
     st.header("Search types, compared 🧐🔍🔎")
 
-    # Have the user ask a question, either by selecting a question from a list or by typing one in
-    type_own_question = "Or, type your own question"
     questions = [
-        "Historical events",
-        "Events in the Antipodes",
-        "Formula 1 driver",
-        type_own_question,
+        "Formula 1 car",
+        "Motorsport vehicle",
+        "Space travel",
+        "Intergalactic voyage",
     ]
-
-    selected_question = st.selectbox(
-        "Select a question", questions, index=len(questions) - 1
-    )
-
-    if selected_question == type_own_question:
-        user_question = st.text_input("Ask a question")
-    else:
-        user_question = selected_question
+    question_caption = "Find entries about..."
+    user_question = utils.type_or_select_question(questions=questions, question_caption=question_caption)
 
     selected_collection = st.selectbox(
         label="Select a collection",

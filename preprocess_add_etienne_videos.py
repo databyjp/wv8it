@@ -29,7 +29,6 @@ def get_or_create_collection(
                 Configure.NamedVectors.text2vec_ollama(
                     name="title_chunk",
                     source_properties=["title", "chunk"],
-                    # model="snowflake-arctic-embed:33m",
                     model="snowflake-arctic-embed",
                     api_endpoint="http://host.docker.internal:11434",
                     vector_index_config=Configure.VectorIndex.hnsw(
@@ -39,7 +38,6 @@ def get_or_create_collection(
                 Configure.NamedVectors.text2vec_ollama(
                     name=chunks_index_name,
                     source_properties=["chunk"],
-                    # model="snowflake-arctic-embed:33m",
                     model="snowflake-arctic-embed",
                     api_endpoint="http://host.docker.internal:11434",
                     vector_index_config=Configure.VectorIndex.hnsw(

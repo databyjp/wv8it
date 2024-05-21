@@ -22,22 +22,33 @@ with utils.get_weaviate_client() as client:
 
         lang_selection = st.selectbox(
             "Select a language",
-            [blank_selection, "English", "French", "Korean", "Dutch"],
+            [blank_selection, "English", "French", "Korean", "Dutch", "Any"],
         )
-        user_query = st.text_input("Find information about...")
-        # top_n = st.slider("How many results?", 1, 20, 10)
-        top_n = 10
+
+        questions = [
+            "Formula 1 car",
+            "Motorsport vehicle",
+            "Space travel",
+            "Intergalactic voyage",
+            "Dog",
+            "Chien",
+        ]
+        question_caption = "Find entries about..."
+        user_query = utils.type_or_select_question(questions=questions, question_caption=question_caption)
 
         if lang_selection != blank_selection:
             wiki_coll = client.collections.get(wiki_name)
+            if lang_selection != "Any":
+                filter = Filter.by_property("lang").equal(lang_map[lang_selection])
+            else:
+                filter = None
+
             if user_query:
                 response = wiki_coll.query.near_text(
                     query=user_query,
                     target_vector=chunks_index_name,
-                    filters=Filter.by_property("lang").equal(
-                        lang_map[lang_selection]
-                    ),
-                    limit=top_n,
+                    filters=filter,
+                    limit=10,
                 )
 
                 for result in response.objects:

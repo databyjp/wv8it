@@ -10,7 +10,12 @@ with utils.get_weaviate_client() as client:
     )
 
     with demo_tab:
-        user_query = st.text_input("Ask me anything!")
+        questions = [
+            "When did the latest Llama model come out, and what's good about it?",
+            "What's the chameleon model?",
+        ]
+        question_caption = "Ask me anything!"
+        user_query = utils.type_or_select_question(questions=questions, question_caption=question_caption)
 
         query_suffix = """
         Answer this in a 2-5, short, concise bullet points, preferably using plain, not very technical language as much as possible.

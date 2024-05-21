@@ -172,6 +172,21 @@ def ask_etienne(client: WeaviateClient, user_question: str, limit: int = MAX_N_C
     return (search_response, gen_response)
 
 
+def type_or_select_question(questions: List[str], question_caption: str):
+    type_own_question = "Or, type your own question"
+
+    questions.append(type_own_question)
+    selected_question = st.selectbox(
+        "Select a question", questions, index=len(questions) - 1
+    )
+
+    if selected_question == type_own_question:
+        user_question = st.text_input(question_caption)
+    else:
+        user_question = selected_question
+    return user_question
+
+
 def search(
     client: WeaviateClient,
     collection_name: str,
