@@ -19,7 +19,7 @@ with utils.get_weaviate_client() as client:
         st.image("./assets/xray_vision.jpg", width=500)
 
     with demo_tab:
-        text_tab, img_tab = st.tabs(["Image search", "Text search"])
+        text_tab, img_tab = st.tabs(["Text search", "Image search"])
 
         with text_tab:
             questions = [
