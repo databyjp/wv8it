@@ -7,12 +7,16 @@ from config import (
 from weaviate.classes.query import Filter
 
 with utils.get_weaviate_client() as client:
-    st.header("Vision-based search! 👀")
 
     # Get the collection
     movies = client.collections.get(multimodal_name)
 
-    demo_tab, explanation_tab = st.tabs(["Demo", "What does it mean for me?"])
+    intro_tab, demo_tab, explanation_tab = st.tabs(["Introduction", "Demo", "What does it mean for me?"])
+
+    with intro_tab:
+        st.header("X-Ray vision! 👀 (Kind of)")
+
+        st.image("./assets/xray_vision.jpg", width=500)
 
     with demo_tab:
         text_tab, img_tab = st.tabs(["Image search", "Text search"])

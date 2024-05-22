@@ -4,13 +4,17 @@ from config import wiki_name, chunks_index_name
 from weaviate.classes.query import Filter
 
 with utils.get_weaviate_client() as client:
-    st.header("Lightning ⚡️ fast vector searches")
 
-    demo_tab, explanation_tab = st.tabs(["Demo", "What does it mean for me?"])
+    intro_tab, demo_tab, explanation_tab = st.tabs(["Introduction", "Demo", "What does it mean for me?"])
 
     user_query = utils.ask_llm(
         "Generate a random search string for me, just a few words please."
     )
+
+    with intro_tab:
+        st.header("Lightning ⚡️ fast vector searches 🔎 at scale")
+
+        st.image("./assets/sonic_speed.jpg", width=500)
 
     with demo_tab:
         search_responses = utils.search_comparison(

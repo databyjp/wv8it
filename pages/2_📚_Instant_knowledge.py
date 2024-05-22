@@ -3,11 +3,15 @@ import utils
 from config import knowledge_base_name, chunks_index_name
 
 with utils.get_weaviate_client() as client:
-    st.header("Learn anything, instantly 📚⚡️")
 
-    demo_tab, teach_tab, explanation_tab = st.tabs(
-        ["Demo", "Teach me something", "What does it mean for me?"]
+    intro_tab, demo_tab, teach_tab, explanation_tab = st.tabs(
+        ["Demo", "Teach me something", "What does it mean for me?", "Introduction"]
     )
+
+    with intro_tab:
+        st.header("Learn anything instantly 📚⚡️")
+
+        st.image("./assets/i-know-kung-fu.gif", width=500)
 
     with demo_tab:
         questions = [

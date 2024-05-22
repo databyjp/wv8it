@@ -154,9 +154,9 @@ def ask_etienne(client: WeaviateClient, user_question: str, limit: int = MAX_N_C
     You are to use the text contained here, which are text snippets from interviews or talks with Etienne about Weaviate.
     Note the transcript might mistake 'Weaviate' for some variations.
     The answer should be in 2-4 short bullet points, using plain language even if the source material is technical.
-    Answer in a similar voice to the source material, as if Etienne were speaking.
     If there is no information, say 'Sorry, I'm not sure what Etienne would say about that.' That's perfectly fine.
-    If you do produce an answer, answer it as if Etienne himself was speaking or writing.
+    If you do produce an answer, answer in a similar voice to the source material, as if Etienne were speaking.
+    You do not need to say 'I think' or 'here's my answer as Etienne' - just answer as if you are Etienne.
     """
 
     if "golf" in user_question:

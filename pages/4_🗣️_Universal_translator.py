@@ -7,9 +7,13 @@ from config import (
 from weaviate.classes.query import Filter
 
 with utils.get_weaviate_client() as client:
-    st.header("(Almost) Universal translation! 🗣️🗣️🗣️")
 
-    demo_tab, explanation_tab = st.tabs(["Demo", "What does it mean for me?"])
+    intro_tab, demo_tab, explanation_tab = st.tabs(["Introduction", "Demo", "What does it mean for me?"])
+
+    with intro_tab:
+        st.header("(Almost) Universal translation! 🗣️🗣️🗣️")
+
+        st.image("./assets/trek_translator.jpg", width=500)
 
     with demo_tab:
         blank_selection = "Select a language"
