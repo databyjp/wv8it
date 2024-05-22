@@ -1,6 +1,6 @@
 ## WV8it - A Weaviate demo app
 
-Weaviate is an AI-native vector database. This demo app showcases various capabilities that can be achieved with Weaviate.
+[Weaviate](https://weaviate.io/developers/weaviate) is an AI-native vector database. This demo app showcases various capabilities that can be achieved with Weaviate.
 
 ### Overview
 
@@ -15,3 +15,11 @@ If you are using the Cohere API, you will need to sign up for an account and get
 1. Run Weaviate with: `docker compose up`
 1. Install the dependencies with `pip install -r requirements.txt`
 1. Run the app with `streamlit run 1_$'\360\237\247\240'_Mind_reading.py`  (Or `streamlit run 1_🧠_Mind_reading.py`)
+
+## More information
+
+- [Weaviate Quickstart](https://weaviate.io/developers/weaviate/quickstart)
+- [Sign up for a free Weaviate Cloud sandbox](https://console.weaviate.cloud/)
+- More in-depth learning materials on:
+    - [Weaviate Academy](https://weaviate.io/developers/academy)
+    - DeepLearning.ai course on [Vector Databases](https://www.deeplearning.ai/short-courses/vector-databases-embeddings-applications/), or on [Multimodal search](https://www.deeplearning.ai/short-courses/building-multimodal-search-and-rag/)
