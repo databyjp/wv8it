@@ -12,7 +12,9 @@ with utils.get_weaviate_client() as client:
     with demo_tab:
         questions = [
             "When did the latest Llama model come out, and what's good about it?",
+            "What can Llama models do?",
             "What's the chameleon model?",
+            "What's multi-token prediction?",
         ]
         question_caption = "Ask me anything!"
         user_query = utils.type_or_select_question(questions=questions, question_caption=question_caption)
