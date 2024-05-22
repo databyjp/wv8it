@@ -1,7 +1,7 @@
 from weaviate import WeaviateClient
 from weaviate.classes.config import Configure, Property, DataType
 import utils
-from config import knowledge_base_name, chunks_index_name, generative_config
+from config import knowledge_base_name, chunks_index_name, default_generative_config
 from weaviate.util import generate_uuid5
 
 
@@ -37,18 +37,22 @@ if not client.collections.exists(coll_name):
         ],
         vectorizer_config=[
             Configure.NamedVectors.text2vec_ollama(
+                name=chunks_index_name,
                 model="snowflake-arctic-embed",
                 api_endpoint="http://host.docker.internal:11434",
-            )
+                vector_index_config=Configure.VectorIndex.hnsw(
+                    quantizer=Configure.VectorIndex.Quantizer.bq()
+                )
+            ),
             # Configure.NamedVectors.text2vec_cohere(
             #     model="embed-multilingual-v3.0",
             #     name=chunks_index_name,
             #     vector_index_config=Configure.VectorIndex.hnsw(
             #         quantizer=Configure.VectorIndex.Quantizer.bq()
-            #     ),
-            # ),
+            #     )
+            # )
         ],
-        generative_config=generative_config
+        generative_config=default_generative_config
     )
 
 utils.add_txt_local(

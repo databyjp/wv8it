@@ -23,11 +23,17 @@ chunks_index_name = "chunk"
 
 MAX_N_CHUNKS = 8
 
-# generative_config = Configure.Generative.ollama(
-#     model="llama3",
-#     api_endpoint="http://host.docker.internal:11434",
-# )
-# generative_config = Configure.Generative.openai(
-#     model="gpt-4",
-# )
-generative_config = Configure.Generative.cohere(model="command-r-plus")
+generative_config_llama3 = Configure.Generative.ollama(
+    model="llama3",
+    api_endpoint="http://host.docker.internal:11434",
+)
+generative_config_phi3 = Configure.Generative.ollama(
+    model="phi3:mini",
+    api_endpoint="http://host.docker.internal:11434",
+)
+generative_config_openai = Configure.Generative.openai(
+    model="gpt-3.5-turbo",
+)
+generative_config_command_r_plus = Configure.Generative.cohere(model="command-r-plus")
+
+default_generative_config = generative_config_command_r_plus

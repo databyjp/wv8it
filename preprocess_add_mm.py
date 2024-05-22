@@ -2,7 +2,7 @@ from weaviate.classes.config import Configure, Property, DataType, Multi2VecFiel
 from weaviate.util import generate_uuid5
 from tqdm import tqdm
 import utils
-from config import multimodal_name, generative_config
+from config import multimodal_name, default_generative_config
 import pandas as pd
 import requests
 from datetime import datetime, timezone
@@ -42,7 +42,7 @@ if not client.collections.exists(coll_name):
             ),
         ],
         # Define the generative module
-        generative_config=generative_config
+        generative_config=default_generative_config
     )
 
 mm_coll = client.collections.get(coll_name)

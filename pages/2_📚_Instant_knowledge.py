@@ -3,7 +3,7 @@ import utils
 from config import knowledge_base_name, chunks_index_name
 
 with utils.get_weaviate_client() as client:
-    st.header("Be a know-it-all 📚🤓")
+    st.header("Learn anything, instantly 📚⚡️")
 
     demo_tab, teach_tab, explanation_tab = st.tabs(
         ["Demo", "Teach me something", "What does it mean for me?"]

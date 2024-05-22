@@ -7,7 +7,7 @@ from config import (
 from weaviate.classes.query import Filter
 
 with utils.get_weaviate_client() as client:
-    st.header("Speak all the languages, fluently! 🗣️🗣️🗣️")
+    st.header("(Almost) Universal translation! 🗣️🗣️🗣️")
 
     demo_tab, explanation_tab = st.tabs(["Demo", "What does it mean for me?"])
 
@@ -26,12 +26,12 @@ with utils.get_weaviate_client() as client:
         )
 
         questions = [
-            "Formula 1 car",
+            "Formula one cars",
             "Motorsport vehicle",
-            "Space travel",
-            "Intergalactic voyage",
             "Dog",
             "Chien",
+            "Ruimtereis",
+            "코리아 그랑프리",
         ]
         question_caption = "Find entries about..."
         user_query = utils.type_or_select_question(questions=questions, question_caption=question_caption)

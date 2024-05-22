@@ -11,7 +11,7 @@ with utils.get_weaviate_client() as client:
     st.header("Search types, compared 🧐🔍🔎")
 
     questions = [
-        "Formula 1 car",
+        "Formula one cars",
         "Motorsport vehicle",
         "Space travel",
         "Intergalactic voyage",

@@ -93,7 +93,7 @@ def ask_rag(
     except Exception as e:
         search_query = user_prompt
 
-    user_prompt += " Answer the question if possible from the provided text snippets. If not, just say 'I'm not sure.' - that's totally fine."
+    user_prompt += " Answer the question if possible from the available information. If not, just say 'I'm not sure.' - that's totally fine."
 
     response = collection.generate.hybrid(
         query=search_query,
@@ -150,12 +150,13 @@ def ask_etienne(client: WeaviateClient, user_question: str, limit: int = MAX_N_C
     )
 
     prompt = f"""
-    Answer the question: {user_question}.
-    Feel free to use the text contained here, which are text snippets from interviews or talks with Etienne about Weaviate.
+    Pretend that you are Etienne, and answer the question: {user_question}.
+    You are to use the text contained here, which are text snippets from interviews or talks with Etienne about Weaviate.
     Note the transcript might mistake 'Weaviate' for some variations.
     The answer should be in 2-4 short bullet points, using plain language even if the source material is technical.
     Answer in a similar voice to the source material, as if Etienne were speaking.
     If there is no information, say 'Sorry, I'm not sure what Etienne would say about that.' That's perfectly fine.
+    If you do produce an answer, answer it as if Etienne himself was speaking or writing.
     """
 
     if "golf" in user_question:

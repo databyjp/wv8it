@@ -7,7 +7,7 @@ import distyll
 import utils
 from weaviate.collections.collection import Collection
 from weaviate import WeaviateClient
-from config import etienne_collection_name, chunks_index_name, generative_config
+from config import etienne_collection_name, chunks_index_name, default_generative_config
 
 
 utils.safe_delete_collection(utils.get_weaviate_client(), etienne_collection_name)
@@ -45,7 +45,7 @@ def get_or_create_collection(
                     ),
                 ),
             ],
-            generative_config=generative_config
+            generative_config=default_generative_config
         )
 
     else:
