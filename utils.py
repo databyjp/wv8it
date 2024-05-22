@@ -173,6 +173,13 @@ def ask_etienne(client: WeaviateClient, user_question: str, limit: int = MAX_N_C
     return (search_response, gen_response)
 
 
+def show_search_results(search_response):
+    st.subheader("Under the hood")
+    for i, obj in enumerate(search_response.objects):
+        with st.expander(f"{obj.properties['title']} - Chunk {obj.properties['chunk_no']}"):
+            st.write(obj.properties["chunk"])
+
+
 def type_or_select_question(questions: List[str], question_caption: str):
     type_own_question = "Or, type your own question"
 

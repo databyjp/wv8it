@@ -46,3 +46,7 @@ with utils.get_weaviate_client() as client:
         ]
 
         utils.explain_meaning(points=points)
+
+        if user_question and search_response:
+            utils.show_search_results(search_response=search_response)
+

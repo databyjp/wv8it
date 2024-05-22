@@ -5,7 +5,7 @@ from config import knowledge_base_name, chunks_index_name
 with utils.get_weaviate_client() as client:
 
     intro_tab, demo_tab, teach_tab, explanation_tab = st.tabs(
-        ["Demo", "Teach me something", "What does it mean for me?", "Introduction"]
+        ["Introduction", "Demo", "Teach me something", "What does it mean for me?"]
     )
 
     with intro_tab:
@@ -54,9 +54,6 @@ with utils.get_weaviate_client() as client:
         if pdf_path:
             utils.add_pdf(pdf_path)
 
-        with st.expander("Just like this guy..."):
-            st.image("./assets/i-know-kung-fu.gif", use_column_width=True)
-
     with explanation_tab:
         points = [
             "- ##### Leverage any existing knowledge source",
@@ -65,3 +62,6 @@ with utils.get_weaviate_client() as client:
         ]
 
         utils.explain_meaning(points=points)
+
+        if user_query and rag_response:
+            utils.show_search_results(search_response=rag_response)
