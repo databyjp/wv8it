@@ -1,5 +1,6 @@
 from distyll.config import CHUNK_COLLECTION
 from weaviate.classes.config import Configure
+from typing import List
 
 ETIENNE_VIDEOS = [
     "https://youtu.be/K1R7oK2piUM",  # Our Mad Journey of Building a Vector Database in Go - Weaviate at FOSDEM 2023
@@ -35,5 +36,29 @@ generative_config_openai = Configure.Generative.openai(
     model="gpt-3.5-turbo",
 )
 generative_config_command_r_plus = Configure.Generative.cohere(model="command-r-plus")
+generative_config_command_r = Configure.Generative.cohere(model="command-r")
 
-default_generative_config = generative_config_command_r_plus
+default_generative_config = generative_config_command_r
+
+
+def vectorizer_config_ollama(vector_name: str, source_properties: List[str], model: str = "snowflake-arctic-embed"):
+    return Configure.NamedVectors.text2vec_ollama(
+        name=vector_name,
+        source_properties=source_properties,
+        model=model,
+        api_endpoint="http://host.docker.internal:11434",
+        vector_index_config=Configure.VectorIndex.hnsw(
+            quantizer=Configure.VectorIndex.Quantizer.bq()
+        )
+    )
+
+
+def vectorizer_config_cohere(vector_name: str, source_properties: List[str], model: str = "embed-multilingual-v3.0"):
+    return Configure.NamedVectors.text2vec_cohere(
+        name=vector_name,
+        source_properties=source_properties,
+        model=model,
+        vector_index_config=Configure.VectorIndex.hnsw(
+            quantizer=Configure.VectorIndex.Quantizer.bq()
+        )
+    )

@@ -1,8 +1,7 @@
 from weaviate import WeaviateClient
 from weaviate.classes.config import Configure, Property, DataType
 import utils
-from config import knowledge_base_name, chunks_index_name, default_generative_config
-from weaviate.util import generate_uuid5
+from config import knowledge_base_name, chunks_index_name, default_generative_config, vectorizer_config_cohere
 
 
 def safe_delete_collection(wv_client: WeaviateClient, wv_coll_name: str) -> bool:
@@ -36,14 +35,15 @@ if not client.collections.exists(coll_name):
             Property(name="chunk_no", data_type=DataType.INT),
         ],
         vectorizer_config=[
-            Configure.NamedVectors.text2vec_ollama(
-                name=chunks_index_name,
-                model="snowflake-arctic-embed",
-                api_endpoint="http://host.docker.internal:11434",
-                vector_index_config=Configure.VectorIndex.hnsw(
-                    quantizer=Configure.VectorIndex.Quantizer.bq()
-                )
-            ),
+            vectorizer_config_cohere(vector_name=chunks_index_name, source_properties=["title", "chunk"]),
+            # Configure.NamedVectors.text2vec_ollama(
+            #     name=chunks_index_name,
+            #     model="snowflake-arctic-embed",
+            #     api_endpoint="http://host.docker.internal:11434",
+            #     vector_index_config=Configure.VectorIndex.hnsw(
+            #         quantizer=Configure.VectorIndex.Quantizer.bq()
+            #     )
+            # ),
             # Configure.NamedVectors.text2vec_cohere(
             #     model="embed-multilingual-v3.0",
             #     name=chunks_index_name,

@@ -5,7 +5,7 @@ from weaviate.classes.config import Configure, Property, DataType
 from weaviate.util import generate_uuid5
 from tqdm import tqdm
 import utils
-from config import wiki_name, chunks_index_name, generative_config_command_r_plus
+from config import wiki_name, chunks_index_name, default_generative_config
 
 client = utils.get_weaviate_client()
 
@@ -42,7 +42,7 @@ if not client.collections.exists(coll_name):
                 source_properties=["title", "text"],
             ),
         ],
-        generative_config=generative_config_command_r_plus
+        generative_config=default_generative_config
     )
 
 wiki_coll = client.collections.get(coll_name)
