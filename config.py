@@ -1,4 +1,3 @@
-from distyll.config import CHUNK_COLLECTION
 from weaviate.classes.config import Configure
 from typing import List
 
@@ -18,7 +17,7 @@ DSPY_VIDEOS = [
 
 etienne_collection_name = "EtienneTextChunk"
 wiki_name = "WikiChunk"
-knowledge_base_name = CHUNK_COLLECTION
+knowledge_base_name = "TextChunk"
 multimodal_name = "Multimodal"
 chunks_index_name = "chunk"
 
