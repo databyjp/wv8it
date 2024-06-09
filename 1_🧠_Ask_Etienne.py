@@ -12,7 +12,7 @@ with utils.get_weaviate_client() as client:
         with text:
             st.subheader("Ask 'Etienne'")
             st.write("⬅️ Etienne, our CTO.")
-            st.write("He couldn't be here, but we can read his mind!")
+            st.write("Let's ask the man who knows about all things Weaviate!")
 
         questions = [
             "Why are vector databases so popular?",

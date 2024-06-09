@@ -24,12 +24,11 @@ with utils.get_weaviate_client() as client:
         )
 
         questions = [
-            "Formula one cars",
-            "Motorsport vehicle",
             "Dog",
+            "Puppy",
             "Chien",
-            "Ruimtereis",
-            "코리아 그랑프리",
+            "Hungarian Grand Prix",
+            "헝가리 그랑프리",
         ]
         question_caption = "Find entries about..."
         user_query = utils.type_or_select_question(

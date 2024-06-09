@@ -17,13 +17,11 @@ with utils.get_weaviate_client() as client:
 
         with text_tab:
             questions = [
-                "Motorsport vehicle",
-                "Ruimtereis",
-                "코리아 그랑프리",
-                "Red posters",
+                "Historical romance",
+                "Science fiction",
+                "Fast cars",
                 "Green action hero",
                 "Space people",
-                "Oceans",
             ]
             question_caption = "Find images like..."
             user_query = utils.type_or_select_question(
