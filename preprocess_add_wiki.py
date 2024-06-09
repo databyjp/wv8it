@@ -42,7 +42,7 @@ if not client.collections.exists(coll_name):
                 source_properties=["title", "text"],
             ),
         ],
-        generative_config=default_generative_config
+        generative_config=default_generative_config,
     )
 
 wiki_coll = client.collections.get(coll_name)

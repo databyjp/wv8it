@@ -41,7 +41,11 @@ generative_config_command_r = Configure.Generative.cohere(model="command-r")
 default_generative_config = generative_config_command_r
 
 
-def vectorizer_config_ollama(vector_name: str, source_properties: List[str], model: str = "snowflake-arctic-embed"):
+def vectorizer_config_ollama(
+    vector_name: str,
+    source_properties: List[str],
+    model: str = "snowflake-arctic-embed",
+):
     return Configure.NamedVectors.text2vec_ollama(
         name=vector_name,
         source_properties=source_properties,
@@ -49,16 +53,20 @@ def vectorizer_config_ollama(vector_name: str, source_properties: List[str], mod
         api_endpoint="http://host.docker.internal:11434",
         vector_index_config=Configure.VectorIndex.hnsw(
             quantizer=Configure.VectorIndex.Quantizer.bq()
-        )
+        ),
     )
 
 
-def vectorizer_config_cohere(vector_name: str, source_properties: List[str], model: str = "embed-multilingual-v3.0"):
+def vectorizer_config_cohere(
+    vector_name: str,
+    source_properties: List[str],
+    model: str = "embed-multilingual-v3.0",
+):
     return Configure.NamedVectors.text2vec_cohere(
         name=vector_name,
         source_properties=source_properties,
         model=model,
         vector_index_config=Configure.VectorIndex.hnsw(
             quantizer=Configure.VectorIndex.Quantizer.bq()
-        )
+        ),
     )

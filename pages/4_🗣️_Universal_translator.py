@@ -7,13 +7,7 @@ from config import (
 from weaviate.classes.query import Filter
 
 with utils.get_weaviate_client() as client:
-
-    intro_tab, demo_tab, explanation_tab = st.tabs(["Introduction", "Demo", "What does it mean for me?"])
-
-    with intro_tab:
-        st.header("(Almost) Universal translation! 🗣️🗣️🗣️")
-
-        st.image("./assets/trek_translator.jpg", width=500)
+    demo_tab, explanation_tab = st.tabs(["Demo", "What does it mean for me?"])
 
     with demo_tab:
         blank_selection = "Select a language"
@@ -38,7 +32,9 @@ with utils.get_weaviate_client() as client:
             "코리아 그랑프리",
         ]
         question_caption = "Find entries about..."
-        user_query = utils.type_or_select_question(questions=questions, question_caption=question_caption)
+        user_query = utils.type_or_select_question(
+            questions=questions, question_caption=question_caption
+        )
 
         if lang_selection != blank_selection:
             wiki_coll = client.collections.get(wiki_name)

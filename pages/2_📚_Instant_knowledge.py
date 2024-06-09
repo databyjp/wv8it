@@ -3,15 +3,9 @@ import utils
 from config import knowledge_base_name, chunks_index_name
 
 with utils.get_weaviate_client() as client:
-
-    intro_tab, demo_tab, teach_tab, explanation_tab = st.tabs(
-        ["Introduction", "Demo", "Teach me something", "What does it mean for me?"]
+    demo_tab, teach_tab, explanation_tab = st.tabs(
+        ["Demo", "Teach me something", "What does it mean for me?"]
     )
-
-    with intro_tab:
-        st.header("Learn anything instantly 📚⚡️")
-
-        st.image("./assets/i-know-kung-fu.gif", width=500)
 
     with demo_tab:
         questions = [
@@ -21,7 +15,9 @@ with utils.get_weaviate_client() as client:
             "What's multi-token prediction?",
         ]
         question_caption = "Ask me anything!"
-        user_query = utils.type_or_select_question(questions=questions, question_caption=question_caption)
+        user_query = utils.type_or_select_question(
+            questions=questions, question_caption=question_caption
+        )
 
         query_suffix = """
         Answer this in a 2-5, short, concise bullet points, preferably using plain, not very technical language as much as possible.
@@ -50,6 +46,7 @@ with utils.get_weaviate_client() as client:
                 - Add the chunks to the knowledge store
                 """
             )
+            st.image("./assets/i-know-kung-fu.gif", width=500)
 
         if pdf_path:
             utils.add_pdf(pdf_path)

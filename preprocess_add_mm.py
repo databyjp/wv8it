@@ -42,7 +42,7 @@ if not client.collections.exists(coll_name):
             ),
         ],
         # Define the generative module
-        generative_config=default_generative_config
+        generative_config=default_generative_config,
     )
 
 mm_coll = client.collections.get(coll_name)

@@ -8,13 +8,7 @@ from config import (
 )
 
 with utils.get_weaviate_client() as client:
-
-    intro_tab, demo_tab = st.tabs(["Introduction", "Demo"])
-
-    with intro_tab:
-        st.header("Find what you need! 🔍")
-
-        st.image("./assets/messy_room.jpg", width=500)
+    demo_tab = st.tabs(["Demo"])
 
     with demo_tab:
         questions = [
@@ -24,7 +18,9 @@ with utils.get_weaviate_client() as client:
             "Intergalactic voyage",
         ]
         question_caption = "Find entries about..."
-        user_question = utils.type_or_select_question(questions=questions, question_caption=question_caption)
+        user_question = utils.type_or_select_question(
+            questions=questions, question_caption=question_caption
+        )
 
         selected_collection = st.selectbox(
             label="Select a collection",

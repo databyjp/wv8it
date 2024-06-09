@@ -1,7 +1,12 @@
 from weaviate import WeaviateClient
 from weaviate.classes.config import Configure, Property, DataType
 import utils
-from config import knowledge_base_name, chunks_index_name, default_generative_config, vectorizer_config_cohere
+from config import (
+    knowledge_base_name,
+    chunks_index_name,
+    default_generative_config,
+    vectorizer_config_cohere,
+)
 
 
 def safe_delete_collection(wv_client: WeaviateClient, wv_coll_name: str) -> bool:
@@ -35,7 +40,9 @@ if not client.collections.exists(coll_name):
             Property(name="chunk_no", data_type=DataType.INT),
         ],
         vectorizer_config=[
-            vectorizer_config_cohere(vector_name=chunks_index_name, source_properties=["title", "chunk"]),
+            vectorizer_config_cohere(
+                vector_name=chunks_index_name, source_properties=["title", "chunk"]
+            ),
             # Configure.NamedVectors.text2vec_ollama(
             #     name=chunks_index_name,
             #     model="snowflake-arctic-embed",
@@ -52,7 +59,7 @@ if not client.collections.exists(coll_name):
             #     )
             # )
         ],
-        generative_config=default_generative_config
+        generative_config=default_generative_config,
     )
 
 utils.add_txt_local(

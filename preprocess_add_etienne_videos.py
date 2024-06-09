@@ -7,7 +7,12 @@ import distyll
 import utils
 from weaviate.collections.collection import Collection
 from weaviate import WeaviateClient
-from config import etienne_collection_name, chunks_index_name, default_generative_config, vectorizer_config_cohere
+from config import (
+    etienne_collection_name,
+    chunks_index_name,
+    default_generative_config,
+    vectorizer_config_cohere,
+)
 
 
 utils.safe_delete_collection(utils.get_weaviate_client(), etienne_collection_name)
@@ -26,10 +31,14 @@ def get_or_create_collection(
                 Property(name="url", data_type=DataType.TEXT, skip_vectorization=True),
             ],
             vectorizer_config=[
-                vectorizer_config_cohere(vector_name="title_chunk", source_properties=["title", "chunk"]),
-                vectorizer_config_cohere(vector_name=chunks_index_name, source_properties=["chunk"]),
+                vectorizer_config_cohere(
+                    vector_name="title_chunk", source_properties=["title", "chunk"]
+                ),
+                vectorizer_config_cohere(
+                    vector_name=chunks_index_name, source_properties=["chunk"]
+                ),
             ],
-            generative_config=default_generative_config
+            generative_config=default_generative_config,
         )
 
     else:

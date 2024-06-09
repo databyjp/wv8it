@@ -2,15 +2,9 @@ import streamlit as st
 import utils
 
 with utils.get_weaviate_client() as client:
-
-    intro_tab, demo_tab, explanation_tab = st.tabs(["Introduction", "Demo", "What does it mean for me?"])
-
-    with intro_tab:
-        st.header("Read minds 🧠🔮🧠")
-        st.image("./assets/mind_reading.jpeg", width=500)
+    demo_tab, explanation_tab = st.tabs(["Demo", "What does it mean for me?"])
 
     with demo_tab:
-
         img, text = st.columns([1, 2])
         with img:
             st.image("./assets/etienne_headshot.png", use_column_width=True)
@@ -21,14 +15,17 @@ with utils.get_weaviate_client() as client:
             st.write("He couldn't be here, but we can read his mind!")
 
         questions = [
-            "Why did you build Weaviate in golang?",
+            "Why are vector databases so popular?",
+            "What's great about vector search?",
+            "What's great about HNSW?",
             "What's multi-tenancy?",
-            "What great about HNSW?",
-            "What's locally adaptive quantization?",
+            "Why did you build Weaviate in golang?",
             "Who's your favourite golfer?",
         ]
         question_caption = "Ask Etienne anything! (about Weaviate)"
-        user_question = utils.type_or_select_question(questions=questions, question_caption=question_caption)
+        user_question = utils.type_or_select_question(
+            questions=questions, question_caption=question_caption
+        )
 
         if user_question:
             search_response, gen_response = utils.ask_etienne(
@@ -49,4 +46,3 @@ with utils.get_weaviate_client() as client:
 
         if user_question and search_response:
             utils.show_search_results(search_response=search_response)
-

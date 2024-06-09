@@ -42,7 +42,10 @@ def ask_llm(
     if provider == "openai":
         openai_client = OpenAI()
         if search_queries_only:
-            user_prompt = "Write a search query to find passages that would help answer the following. Answer with the best one search query and nothing else: ===== " + user_prompt
+            user_prompt = (
+                "Write a search query to find passages that would help answer the following. Answer with the best one search query and nothing else: ===== "
+                + user_prompt
+            )
         response = openai_client.chat.completions.create(
             model="gpt-4",
             messages=[
@@ -176,7 +179,9 @@ def ask_etienne(client: WeaviateClient, user_question: str, limit: int = MAX_N_C
 def show_search_results(search_response):
     st.subheader("Under the hood")
     for i, obj in enumerate(search_response.objects):
-        with st.expander(f"{obj.properties['title']} - Chunk {obj.properties['chunk_no']}"):
+        with st.expander(
+            f"{obj.properties['title']} - Chunk {obj.properties['chunk_no']}"
+        ):
             st.write(obj.properties["chunk"])
 
 
@@ -335,12 +340,10 @@ def url_to_base64(url):
 
 
 def to_base64(content):
-
     return base64.b64encode(content).decode("utf-8")
 
 
 def base64_to_image(base64_string: str):
-
     from io import BytesIO
     from PIL import Image
 
