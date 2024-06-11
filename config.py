@@ -1,5 +1,6 @@
 from weaviate.classes.config import Configure
 from typing import List
+from distyll.config import COLLECTION_NAME
 
 ETIENNE_VIDEOS = [
     "https://youtu.be/K1R7oK2piUM",  # Our Mad Journey of Building a Vector Database in Go - Weaviate at FOSDEM 2023
@@ -17,7 +18,7 @@ DSPY_VIDEOS = [
 
 etienne_collection_name = "EtienneTextChunk"
 wiki_name = "WikiChunk"
-knowledge_base_name = "TextChunk"
+knowledge_base_name = COLLECTION_NAME
 multimodal_name = "Multimodal"
 chunks_index_name = "chunk"
 
