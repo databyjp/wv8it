@@ -3,7 +3,18 @@ import utils
 from config import wiki_name, chunks_index_name
 from weaviate.classes.query import Filter
 
+st.subheader("Search speed comparison:")
+
+st.write("For a randomised search query, how long does a vector search take?")
+
 with utils.get_weaviate_client() as client:
+
+    coll = client.collections.get(wiki_name)
+
+    count = coll.aggregate.over_all(total_count=True).total_count
+
+    st.write(f"Dataset: {count} objects")
+
     demo_tab, explanation_tab = st.tabs(["Demo", "What does it mean for me?"])
 
     user_query = utils.ask_llm(
@@ -14,16 +25,6 @@ with utils.get_weaviate_client() as client:
         search_responses = utils.search_comparison(
             client=client, collection_name=wiki_name, user_query=user_query
         )
-
-        st.subheader("Search speed comparison:")
-
-        st.write("For a randomised search query, how long does a vector search take?")
-
-        coll = client.collections.get(wiki_name)
-
-        count = coll.aggregate.over_all(total_count=True).total_count
-
-        st.write(f"Dataset: {count} objects")
 
         col1, col2 = st.columns(2)
 
