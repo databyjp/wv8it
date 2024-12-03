@@ -19,7 +19,7 @@ from weaviate.util import generate_uuid5
 import base64
 
 
-def get_weaviate_client(port: int = 8080, grpc_port: int = 50051) -> WeaviateClient:
+def get_weaviate_client(port: int = 8980, grpc_port: int = 50951) -> WeaviateClient:
     openai_apikey = os.getenv("OPENAI_APIKEY")
     cohere_apikey = os.getenv("COHERE_APIKEY")
 

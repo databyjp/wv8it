@@ -8,7 +8,7 @@ from config import (
 )
 
 with utils.get_weaviate_client() as client:
-    demo_tab = st.tabs(["Demo"])
+    demo_tab, _ = st.tabs(["Demo", "What does it mean for me?"])
 
     with demo_tab:
         questions = [

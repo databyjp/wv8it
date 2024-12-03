@@ -17,7 +17,6 @@ with utils.get_weaviate_client() as client:
 
         with text_tab:
             questions = [
-                "Historical romance",
                 "Science fiction",
                 "Fast cars",
                 "Green action hero",
