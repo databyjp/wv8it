@@ -97,9 +97,10 @@ with get_weaviate_client() as client:
     with example_col:
         st.write("Example queries")
         example_queries = [
-            "Weaviate cluster architecture",
-            "HNSW quantization",
+            "How vector databases organise data",
             "Vector search explanation",
+            "HNSW quantization",
+            "Weaviate cluster architecture",
             "Vector DBs and spongebob squarepants",
         ]
 
