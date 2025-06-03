@@ -24,7 +24,7 @@ client = get_weaviate_client()
 
 st.title("Weaviate + Multimodal Image Search")
 st.markdown(
-    "Search for images using natural language queries with a multi-modal vectorizer model"
+    "Search for PDF pages in natural language with a multi-modal vectorizer"
 )
 
 kit = EmbedKit.cohere(
@@ -82,7 +82,7 @@ search_col, example_col = st.columns([1, 1])
 
 with search_col:
     # Create a single column for the search input
-    query = st.text_input("Enter your query", key="query")
+    query = st.text_input("Enter your query (or select an example)", key="query")
 
     # Buttons below the query
     button_col1, button_col2 = st.columns(2)
@@ -185,5 +185,4 @@ if (search_button or len(query) > 0) and query.strip():
 
 elif search_button and not query.strip():
     st.error("Please enter a search query before clicking the Search button.")
-else:
-    st.info("Have you ever tried to find a particular slide? It's a huge pain. \n\nBut... not with **multimodal search!** \n\nEnter a query in the sidebar and click 'Search' to find images.")
+

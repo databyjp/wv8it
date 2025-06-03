@@ -17,7 +17,7 @@
       {
         "name": "Ask Etienne",
         "path": "pages/ask_etienne.py",
-        "enabled": false,
+        "enabled": true,
         "description": "Ask questions to Etienne's knowledge base"
       },
       {
@@ -29,7 +29,7 @@
       {
         "name": "Search Types",
         "path": "pages/search_types.py",
-        "enabled": true,
+        "enabled": false,
         "description": "Advanced search capabilities"
       },
       {
