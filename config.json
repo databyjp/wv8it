@@ -27,10 +27,16 @@
         "description": "Multi-language support"
       },
       {
-        "name": "Modalities",
-        "path": "pages/modalities.py",
+        "name": "Image search",
+        "path": "pages/image_search.py",
         "enabled": true,
-        "description": "Multi-modal capabilities"
+        "description": "Multi-modal image search"
+      },
+      {
+        "name": "PDF search",
+        "path": "pages/pdf_search.py",
+        "enabled": true,
+        "description": "Multi-modal PDF search"
       },
       {
         "name": "Scalable Search Speeds",

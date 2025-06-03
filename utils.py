@@ -360,3 +360,21 @@ def base64_to_image(base64_string: str):
 
     # Return the PIL Image object
     return image
+
+
+def render_svg_file(svg_file_path, width=None, height=None):
+    import base64
+
+    with open(svg_file_path, "r") as f:
+        svg = f.read()
+    b64 = base64.b64encode(svg.encode("utf-8")).decode("utf-8")
+
+    # Add width and height attributes to the img tag
+    style_attributes = ""
+    if width:
+        style_attributes += f'width="{width}" '
+    if height:
+        style_attributes += f'height="{height}" '
+
+    html = f'<img src="data:image/svg+xml;base64,{b64}" {style_attributes}/>'
+    return html
