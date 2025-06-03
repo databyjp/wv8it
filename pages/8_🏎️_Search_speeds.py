@@ -1,8 +1,6 @@
 import streamlit as st
 import utils
 from config import wiki_name, chunks_index_name
-from weaviate.classes.query import Filter
-import time
 
 st.subheader("Search Speed Comparison")
 
