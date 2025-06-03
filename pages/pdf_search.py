@@ -75,7 +75,7 @@ def reset_query():
     st.session_state.query = ""
 
 # Create the main settings section
-st.header("Search Settings")
+st.subheader("🔍 Search Settings")
 
 # Create a two-column layout for the search input and example queries
 search_col, example_col = st.columns([1, 1])
@@ -98,8 +98,8 @@ with example_col:
     st.write("Example queries")
     example_queries = [
         "Weaviate cluster architecture",
-        "Memory savings and costs",
-        "How to create a new collection",
+        "HNSW quantization",
+        "Vector search explanation",
         "Vector DBs and spongebob squarepants",
     ]
 
