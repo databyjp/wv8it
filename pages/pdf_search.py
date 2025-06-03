@@ -87,7 +87,7 @@ with search_col:
     # Buttons below the query
     button_col1, button_col2 = st.columns(2)
     with button_col1:
-        search_button = st.button("Search")
+        search_button = st.button("Search", type="primary")
     with button_col2:
         reset_button = st.button("Reset", on_click=reset_query)
 
@@ -111,7 +111,8 @@ with example_col:
         if st.button(example[:40] + "..." if len(example) > 40 else example,
                      on_click=set_example_query,
                      args=(example,),
-                     key=f"example_{example}"):
+                     key=f"example_{example}",
+                     type="primary"):
             search_button = True
 
 # Display the SVG logo with specified dimensions
@@ -155,17 +156,28 @@ if (search_button or len(query) > 0) and query.strip():
                         st.error(f"Error loading image: {str(e)}")
 
     st.subheader("Multimodal RAG")
-    rag_query = f"What do these slides tell us? The search query was: {query}"
+    default_rag_query = f"What do these slides tell us? The search query was: {query}"
+
+    # Add text input for custom RAG query
+    custom_rag_query = st.text_input(
+        "Customize RAG query (optional)",
+        value=default_rag_query,
+        help="Modify the query to get different insights from the slides"
+    )
+
+    # Use custom query if provided, otherwise use default
+    rag_query = custom_rag_query if custom_rag_query.strip() else default_rag_query
 
     # Add a button for RAG
-    if st.button("Generate RAG Response"):
+    if st.button("Generate RAG Response", type="primary"):
         if (len(rag_query.strip()) > 0):
-            rag_response_txt = mm_rag(
-                query,
-                rag_query,
-                weaviate_client=client,
-                top_k=num_results
-            )
+            with st.spinner("Generating RAG response... This may take a few moments."):
+                rag_response_txt = mm_rag(
+                    query,
+                    rag_query,
+                    weaviate_client=client,
+                    top_k=num_results
+                )
 
             st.write(f"Response for: '{rag_query}'")
             st.write(f"{rag_response_txt}")
