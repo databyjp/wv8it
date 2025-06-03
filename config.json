@@ -5,44 +5,44 @@
       {
         "name": "Ask Etienne",
         "path": "pages/ask_etienne.py",
-        "enabled": true,
+        "enabled": false,
         "description": "Ask questions to Etienne's knowledge base"
       },
       {
         "name": "Instant Knowledge",
         "path": "pages/instant_knowledge.py",
-        "enabled": true,
+        "enabled": false,
         "description": "Explore instant knowledge base capabilities"
       },
       {
         "name": "Search Types",
         "path": "pages/search_types.py",
-        "enabled": true,
+        "enabled": false,
         "description": "Advanced search capabilities"
       },
       {
         "name": "Languages",
         "path": "pages/languages.py",
-        "enabled": true,
+        "enabled": false,
         "description": "Multi-language support"
       },
       {
         "name": "Image search",
         "path": "pages/image_search.py",
-        "enabled": true,
+        "enabled": false,
         "description": "Multi-modal image search"
       },
       {
         "name": "PDF search",
         "path": "pages/pdf_search.py",
         "enabled": true,
-        "description": "Multi-modal PDF search"
+        "description": "Search PDF pages with multimodal embeddings"
       },
       {
         "name": "Scalable Search Speeds",
         "path": "pages/scalable_search_speeds.py",
         "enabled": true,
-        "description": "Performance comparison"
+        "description": "Performance comparison - HNSW vs brute-force search"
       }
     ]
   }

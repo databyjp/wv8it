@@ -1,6 +1,5 @@
 import streamlit as st
 import json
-from pathlib import Path
 
 # Load navigation configuration
 def load_config():
@@ -17,7 +16,7 @@ config = load_config()
 # Set page config
 st.set_page_config(
     page_title=config["navigation"]["title"],
-    page_icon="��",
+    page_icon="🚀",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -47,13 +46,13 @@ if st.session_state.current_page:
         exec(f.read())
 else:
     # Show welcome page
-    st.title("Welcome to Weaviate Demos")
+    st.title("Fun with Weaviate")
     st.write("Select a demo from the sidebar to get started!")
 
     # Display available demos
-    st.subheader("Available Demos")
-    cols = st.columns(3)
+    st.subheader("Demos & descriptions")
+    cols = st.columns(2)
     for i, page in enumerate(config["navigation"]["pages"]):
         if page["enabled"]:
-            with cols[i % 3]:
+            with cols[i % 2]:
                 st.info(f"**{page['name']}**\n\n{page['description']}")
