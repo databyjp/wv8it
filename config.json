@@ -3,6 +3,18 @@
     "title": "Weaviate Demos",
     "pages": [
       {
+        "name": "PDF search",
+        "path": "pages/pdf_search.py",
+        "enabled": true,
+        "description": "Search PDF pages with multimodal embeddings"
+      },
+      {
+        "name": "Scalable Search Speeds",
+        "path": "pages/scalable_search_speeds.py",
+        "enabled": true,
+        "description": "Performance comparison - HNSW vs brute-force search"
+      },
+      {
         "name": "Ask Etienne",
         "path": "pages/ask_etienne.py",
         "enabled": false,
@@ -17,7 +29,7 @@
       {
         "name": "Search Types",
         "path": "pages/search_types.py",
-        "enabled": false,
+        "enabled": true,
         "description": "Advanced search capabilities"
       },
       {
@@ -29,20 +41,8 @@
       {
         "name": "Image search",
         "path": "pages/image_search.py",
-        "enabled": false,
+        "enabled": true,
         "description": "Multi-modal image search"
-      },
-      {
-        "name": "PDF search",
-        "path": "pages/pdf_search.py",
-        "enabled": true,
-        "description": "Search PDF pages with multimodal embeddings"
-      },
-      {
-        "name": "Scalable Search Speeds",
-        "path": "pages/scalable_search_speeds.py",
-        "enabled": true,
-        "description": "Performance comparison - HNSW vs brute-force search"
       }
     ]
   }

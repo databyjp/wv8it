@@ -68,6 +68,10 @@ for page in config["navigation"]["pages"]:
         if st.sidebar.button(page["name"], help=page["description"]):
             st.session_state.current_page = page["path"]
 
+# Add repository link
+st.sidebar.markdown("---")
+st.sidebar.markdown("Source code: [https://github.com/databyjp/wv8it](https://github.com/databyjp/wv8it)")
+
 # Main content area
 if st.session_state.current_page:
     # Load and execute the selected page
@@ -83,16 +87,19 @@ else:
     st.markdown("---")
 
     # Create a grid of demo cards
-    cols = st.columns(2)
-    for i, page in enumerate(config["navigation"]["pages"]):
-        if page["enabled"]:
-            with cols[i % 2]:
-                st.markdown(f"""
-                    <div class="demo-card">
-                        <div class="demo-title">{page['name']}</div>
-                        <div class="demo-description">{page['description']}</div>
-                    </div>
-                """, unsafe_allow_html=True)
+    enabled_pages = [page for page in config["navigation"]["pages"] if page["enabled"]]
+    for i in range(0, len(enabled_pages), 2):
+        cols = st.columns(2)
+        for j in range(2):
+            if i + j < len(enabled_pages):
+                with cols[j]:
+                    page = enabled_pages[i + j]
+                    st.markdown(f"""
+                        <div class="demo-card">
+                            <div class="demo-title">{page['name']}</div>
+                            <div class="demo-description">{page['description']}</div>
+                        </div>
+                    """, unsafe_allow_html=True)
 
     # Add a footer
     st.markdown("---")
