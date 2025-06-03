@@ -1,0 +1,43 @@
+{
+  "navigation": {
+    "title": "Weaviate Demos",
+    "pages": [
+      {
+        "name": "Ask Etienne",
+        "path": "pages/1_🧠_Ask_Etienne.py",
+        "enabled": true,
+        "description": "Ask questions to Etienne's knowledge base"
+      },
+      {
+        "name": "Instant Knowledge",
+        "path": "pages/2_📚_Instant_knowledge.py",
+        "enabled": true,
+        "description": "Explore instant knowledge base capabilities"
+      },
+      {
+        "name": "Search",
+        "path": "pages/3_🔎_Search.py",
+        "enabled": true,
+        "description": "Advanced search capabilities"
+      },
+      {
+        "name": "Languages",
+        "path": "pages/4_🗣️_Languages.py",
+        "enabled": true,
+        "description": "Multi-language support"
+      },
+      {
+        "name": "Modalities",
+        "path": "pages/5_👀_Modalities.py",
+        "enabled": true,
+        "description": "Multi-modal capabilities"
+      },
+      {
+        "name": "Search Speeds",
+        "path": "pages/8_🏎️_Search_speeds.py",
+        "enabled": true,
+        "description": "Performance comparison"
+      }
+    ]
+  }
+}

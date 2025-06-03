@@ -7,7 +7,7 @@ with utils.get_weaviate_client() as client:
     with demo_tab:
         img, text = st.columns([1, 2])
         with img:
-            st.image("./assets/etienne_headshot.png", use_column_width=True)
+            st.image("./assets/etienne_headshot.png", use_container_width=True)
 
         with text:
             st.subheader("Ask 'Etienne'")

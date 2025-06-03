@@ -46,7 +46,7 @@ with utils.get_weaviate_client() as client:
                     img = utils.base64_to_image(o.properties["poster"])
                     with locals()[f"col{i+1}"]:
                         st.image(
-                            img, caption=o.properties["title"], use_column_width=True
+                            img, caption=o.properties["title"], use_container_width=True
                         )
 
         with img_tab:
@@ -80,7 +80,7 @@ with utils.get_weaviate_client() as client:
                     img = utils.base64_to_image(o.properties["poster"])
                     with locals()[f"col{i+1}"]:
                         st.image(
-                            img, caption=o.properties["title"], use_column_width=True
+                            img, caption=o.properties["title"], use_container_width=True
                         )
 
     with explanation_tab:
