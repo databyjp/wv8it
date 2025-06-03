@@ -21,11 +21,40 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Hide the default navigation
+# Custom CSS for better styling
 st.markdown("""
     <style>
         [data-testid="stSidebarNav"] {
             display: none;
+        }
+        .main-header {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1E88E5;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .sub-header {
+            font-size: 1.5rem;
+            color: #666;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .demo-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e9ecef;
+        }
+        .demo-title {
+            color: #1E88E5;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .demo-description {
+            color: #666;
+            font-size: 1rem;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -46,13 +75,25 @@ if st.session_state.current_page:
         exec(f.read())
 else:
     # Show welcome page
-    st.title("Fun with Weaviate")
-    st.write("Select a demo from the sidebar to get started!")
+    st.markdown('<div class="main-header">🚀 Fun with Weaviate</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-header">Explore the power of vector search and AI with these interactive demos</div>', unsafe_allow_html=True)
 
     # Display available demos
-    st.subheader("Demos & descriptions")
+    st.markdown("### Available Demos")
+    st.markdown("---")
+
+    # Create a grid of demo cards
     cols = st.columns(2)
     for i, page in enumerate(config["navigation"]["pages"]):
         if page["enabled"]:
             with cols[i % 2]:
-                st.info(f"**{page['name']}**\n\n{page['description']}")
+                st.markdown(f"""
+                    <div class="demo-card">
+                        <div class="demo-title">{page['name']}</div>
+                        <div class="demo-description">{page['description']}</div>
+                    </div>
+                """, unsafe_allow_html=True)
+
+    # Add a footer
+    st.markdown("---")
+    st.markdown("**Select any demo from the sidebar** to get started with your exploration!")
