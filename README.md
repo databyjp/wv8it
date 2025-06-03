@@ -14,7 +14,7 @@ If you are using the Cohere API, you will need to sign up for an account and get
 1. (Optional) Activate a virtual environment
 1. Run Weaviate with: `docker compose up`
 1. Install the dependencies with `pip install -r requirements.txt`
-1. Run the app with `streamlit run 1_$'\360\237\247\240'_Mind_reading.py`  (Or `streamlit run 1_🧠_Mind_reading.py`)
+1. Run the app with `streamlit run 1_🧠_Ask_Etienne.py`)
 
 ## More information
 
