@@ -1,5 +1,8 @@
 import streamlit as st
 import json
+import torch
+
+torch.classes.__path__ = []  # Prevent error shown here https://discuss.streamlit.io/t/error-in-torch-with-streamlit/90908/5
 
 # Load navigation configuration
 def load_config():
@@ -85,6 +88,8 @@ else:
     # Display available demos
     st.markdown("### Available Demos")
     st.markdown("---")
+    st.markdown("**Select any demo from the sidebar** to get started with your exploration!")
+    st.markdown("---")
 
     # Create a grid of demo cards
     enabled_pages = [page for page in config["navigation"]["pages"] if page["enabled"]]
@@ -101,6 +106,3 @@ else:
                         </div>
                     """, unsafe_allow_html=True)
 
-    # Add a footer
-    st.markdown("---")
-    st.markdown("**Select any demo from the sidebar** to get started with your exploration!")
