@@ -18,7 +18,7 @@
         "name": "Ask Etienne",
         "path": "pages/ask_etienne.py",
         "enabled": true,
-        "description": "Ask questions to Etienne's knowledge base"
+        "description": "Ask questions to (AI) Etienne, our CTO"
       },
       {
         "name": "Instant Knowledge",
