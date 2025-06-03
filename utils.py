@@ -39,7 +39,7 @@ def get_weaviate_client(port: int = 8980, grpc_port: int = 50951) -> WeaviateCli
 def ask_llm(
     user_prompt: str,
     search_queries_only=False,
-    provider: Literal["ollama", "cohere"] = "openai",
+    provider: Literal["ollama", "cohere", "openai"] = "openai",
 ) -> str:
     if provider == "openai":
         openai_client = OpenAI()
@@ -49,7 +49,7 @@ def ask_llm(
                 + user_prompt
             )
         response = openai_client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": user_prompt},

@@ -4,9 +4,9 @@
 
 ### Overview
 
-This app uses a combination of Weaviate, Streamlit and Ollama, as well as the Cohere API. Note that Ollama and the Cohere API can be replaced with other services that provide similar functionality.
+This app uses a combination of Weaviate, Streamlit and AI models.
 
-If you are using the Cohere API, you will need to sign up for an account and get an API key. Then, save it as an environment variable with the name `COHERE_APIKEY`.
+For the various AI models, you will need to sign up for an account and get an API key. Then, save it as an environment variable with the name `COHERE_APIKEY`, `OPENAI_APIKEY`, `ANTHROPIC_APIKEY`, etc.
 
 ### Setup
 
@@ -14,7 +14,13 @@ If you are using the Cohere API, you will need to sign up for an account and get
 1. (Optional) Activate a virtual environment
 1. Run Weaviate with: `docker compose up`
 1. Install the dependencies with `pip install -r requirements.txt`
-1. Run the app with `streamlit run app.py`)
+1. Run the app with `streamlit run app.py`
+
+## Usage
+
+- `config.json` contains the configuration for the app. Each page can be enabled or disabled by setting the `enabled` field to `true` or `false`.
+- `pages/` contains the pages for the app. Each page is a Streamlit application.
+- `utils.py` contains the utility functions for the app, such as Weaviate instantiation, LLM calls, etc.
 
 ## More information
 
