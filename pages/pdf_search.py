@@ -70,27 +70,32 @@ def mm_rag(query, rag_query, weaviate_client: WeaviateClient, top_k=6):
 
     return response.generative.text
 
+# Function to reset query
+def reset_query():
+    st.session_state.query = ""
 
-# Create the sidebar for input
-with st.sidebar:
-    st.header("Search Settings")
+# Create the main settings section
+st.header("Search Settings")
 
-    # Function to reset query
-    def reset_query():
-        st.session_state.query = ""
+# Create a two-column layout for the search input and example queries
+search_col, example_col = st.columns([1, 1])
 
-    # Text input using session state
+with search_col:
+    # Create a single column for the search input
     query = st.text_input("Enter your query", key="query")
 
-    # Search button
-    col1, col2 = st.columns(2)
-    with col1:
+    # Buttons below the query
+    button_col1, button_col2 = st.columns(2)
+    with button_col1:
         search_button = st.button("Search")
-    with col2:
+    with button_col2:
         reset_button = st.button("Reset", on_click=reset_query)
 
-    # Example queries
-    st.subheader("Example queries")
+    # Number of results dropdown
+    num_results = st.selectbox("Number of results", options=[2, 4, 6, 8], index=1)
+
+with example_col:
+    st.write("Example queries")
     example_queries = [
         "Weaviate cluster architecture",
         "Memory savings and costs",
@@ -105,20 +110,17 @@ with st.sidebar:
     for example in example_queries:
         if st.button(example[:40] + "..." if len(example) > 40 else example,
                      on_click=set_example_query,
-                     args=(example,)):
+                     args=(example,),
+                     key=f"example_{example}"):
             search_button = True
 
-    st.subheader("Query settings")
-    # Number of results slider
-    num_results = st.slider("Number of results", min_value=1, max_value=6, value=4)
-
-    # Display the SVG logo with specified dimensions
-    st.write(
-        "Powered by:", render_svg_file(
-            "assets/weaviate-logo-square-dark.svg", width="80px", height="80px"
-        ),
-        unsafe_allow_html=True,
-    )
+# Display the SVG logo with specified dimensions
+st.write(
+    "Powered by:", render_svg_file(
+        "assets/weaviate-logo-square-dark.svg", width="80px", height="80px"
+    ),
+    unsafe_allow_html=True,
+)
 
 # Main area for displaying results
 if (search_button or len(query) > 0) and query.strip():
@@ -153,20 +155,20 @@ if (search_button or len(query) > 0) and query.strip():
                         st.error(f"Error loading image: {str(e)}")
 
     st.subheader("Multimodal RAG")
-
-    # rag_query = st.text_input("Ask a question re: these slides", key="rag_query", value=f"What do these slides tell us? The search query was: {query}")
     rag_query = f"What do these slides tell us? The search query was: {query}"
 
-    if (len(rag_query.strip()) > 0):
-        rag_response_txt = mm_rag(
-            query,
-            rag_query,
-            weaviate_client=client,
-            top_k=num_results
-        )
+    # Add a button for RAG
+    if st.button("Generate RAG Response"):
+        if (len(rag_query.strip()) > 0):
+            rag_response_txt = mm_rag(
+                query,
+                rag_query,
+                weaviate_client=client,
+                top_k=num_results
+            )
 
-        st.write(f"Response for: '{rag_query}'")
-        st.write(f"{rag_response_txt}")
+            st.write(f"Response for: '{rag_query}'")
+            st.write(f"{rag_response_txt}")
 
 
 elif search_button and not query.strip():
