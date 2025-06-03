@@ -42,6 +42,8 @@ kit = EmbedKit.cohere(
     image_batch_size=8
 )
 
+pdf_collection = client.collections.get(collection_name)
+
 with pdf_collection.batch.fixed_size(10) as batch:
     for pdf_file in pdf_files:
         print(f"Processing {pdf_file.name}")

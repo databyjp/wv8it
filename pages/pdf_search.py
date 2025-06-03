@@ -1,6 +1,8 @@
 import streamlit as st
 from pathlib import Path
 from PIL import Image
+import base64
+from io import BytesIO
 from utils import (
     render_svg_file,
     get_weaviate_client
@@ -40,6 +42,7 @@ def search_images(query, weaviate_client: WeaviateClient, top_k=6):
     response = pdfs.query.near_vector(
         near_vector=query_vector,
         target_vector="cohere",
+        return_properties=["image", "page", "filepath"],
         limit=top_k,
         return_metadata=MetadataQuery(distance=True),
     )
@@ -136,17 +139,16 @@ if (search_button or len(query) > 0) and query.strip():
                 result = results.objects[idx]
                 with columns[col]:
                     try:
-                        # Display the image if it exists
-                        image_path_str = result.properties["filepath"]
-                        image_path = Path(image_path_str)
-                        if image_path.exists():
-                            img = Image.open(image_path)
-                            st.image(
-                                img, caption=f"Distance: {result.metadata.distance:.2f}"
-                            )
-                            st.caption(f"Path: {image_path_str}")
-                        else:
-                            st.error(f"Image not found: {image_path}")
+                        # Get the base64 image data from the blob
+                        image_data = result.properties["image"]
+                        # Decode base64 to bytes
+                        image_bytes = base64.b64decode(image_data)
+                        # Convert bytes to image
+                        img = Image.open(BytesIO(image_bytes))
+                        st.image(
+                            img, caption=f"Distance: {result.metadata.distance:.2f}"
+                        )
+                        st.caption(f"Page: {result.properties['page']}")
                     except Exception as e:
                         st.error(f"Error loading image: {str(e)}")
 
