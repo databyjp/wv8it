@@ -20,8 +20,9 @@ import base64
 
 
 def get_weaviate_client(port: int = 8980, grpc_port: int = 50951) -> WeaviateClient:
-    openai_apikey = os.getenv("OPENAI_APIKEY")
-    cohere_apikey = os.getenv("COHERE_APIKEY")
+    openai_apikey = os.getenv("OPENAI_API_KEY")
+    cohere_apikey = os.getenv("COHERE_API_KEY")
+    anthropic_apikey = os.getenv("ANTHROPIC_APIKEY")
 
     client = weaviate.connect_to_local(
         port=port,
@@ -29,6 +30,7 @@ def get_weaviate_client(port: int = 8980, grpc_port: int = 50951) -> WeaviateCli
         headers={
             "X-OpenAI-Api-Key": openai_apikey,
             "X-Cohere-Api-Key": cohere_apikey,
+            "X-Anthropic-Api-Key": anthropic_apikey,
         },
     )
     return client
